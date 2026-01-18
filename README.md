@@ -171,6 +171,30 @@ twg-video-app/
 └── package.json       # Zależności projektu
 ```
 
+## Funkcjonalności
+
+### Home Screen
+- Cztery kategorie filmów: "React Native", "React", "TypeScript", "JavaScript"
+- Poziome listy przewijane dla każdej kategorii
+- Przycisk "Show more" dla każdej kategorii przekierowujący do Search Screen
+- Pasek wyszukiwania w headerze przekierowujący do Search Screen
+
+### Search Screen
+- Wyszukiwanie filmów z YouTube Data API v3
+- Lista wyników z miniaturką, tytułem i krótkim opisem
+- Sortowanie wyników (latest, oldest, most popular)
+- Lazy loading (początkowo 10 wyników, możliwość załadowania kolejnych)
+- Każdy wynik jest klikalny i przekierowuje do Video Detail Screen
+
+### Video Detail Screen
+- Odtwarzacz wideo z `react-native-video` (fullscreen i minimized mode obsługiwane przez natywne kontrolki)
+- Wyświetlanie tytułu, kanału i opisu filmu z API
+- Zakładki Details/Notes:
+  - **Details**: wyświetla pełny opis filmu
+  - **Notes**: pozwala dodawać i edytować lokalnie przechowywane notatki do filmu
+- Automatyczne zapisywanie notatek (z debounce 1 sekunda)
+- Notatki są przechowywane lokalnie per video ID używając AsyncStorage
+
 ## Technologie
 
 - **React Native** 0.81.5
@@ -178,6 +202,7 @@ twg-video-app/
 - **TypeScript** ~5.9.2
 - **React Navigation** (Native Stack & Bottom Tabs)
 - **React Native Video** (beta) - odtwarzanie wideo
+- **AsyncStorage** - lokalne przechowywanie notatek
 - **Axios** - żądania HTTP
 - **YouTube Data API v3** - pobieranie danych wideo
 
