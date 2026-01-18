@@ -14,9 +14,12 @@ const getApiKey = (): string => {
   return apiKey;
 };
 
+export type SortOrder = 'date' | 'rating' | 'relevance' | 'title' | 'viewCount';
+
 export const searchVideos = async (
   query: string,
-  maxResults: number = 10
+  maxResults: number = 10,
+  order: SortOrder = 'relevance'
 ): Promise<YouTubeVideo[]> => {
   try {
     const response = await axios.get<YouTubeApiResponse>(
@@ -24,9 +27,10 @@ export const searchVideos = async (
       {
         params: {
           part: 'snippet',
-          q: query,
+          q: query || 'programming tutorial',
           type: 'video',
           maxResults,
+          order,
           key: getApiKey(),
         },
       }
@@ -34,6 +38,30 @@ export const searchVideos = async (
     return response.data.items;
   } catch (error) {
     console.error('Error fetching videos:', error);
+    throw error;
+  }
+};
+
+export const getPopularVideos = async (
+  maxResults: number = 20
+): Promise<YouTubeVideo[]> => {
+  try {
+    const response = await axios.get<YouTubeApiResponse>(
+      `${YOUTUBE_API_BASE_URL}/search`,
+      {
+        params: {
+          part: 'snippet',
+          q: 'programming tutorial',
+          type: 'video',
+          maxResults,
+          order: 'viewCount',
+          key: getApiKey(),
+        },
+      }
+    );
+    return response.data.items;
+  } catch (error) {
+    console.error('Error fetching popular videos:', error);
     throw error;
   }
 };
