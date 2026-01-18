@@ -1,3 +1,19 @@
+/**
+ * Video Detail Screen
+ * 
+ * Displays video playback and detailed information about a selected video.
+ * Uses react-native-video v7 with NitroModules for native video playback.
+ * 
+ * Features:
+ * - HLS video playback with native controls
+ * - Video metadata display (title, channel, description)
+ * - Auto-play functionality
+ * - Error handling and loading states
+ * - Safe area support for all device types
+ * 
+ * @module VideoDetailScreen
+ */
+
 import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
@@ -28,8 +44,17 @@ interface VideoDetailScreenProps {
 }
 
 const { width } = Dimensions.get('window');
-const VIDEO_HEIGHT = width * 0.5625;
+const VIDEO_HEIGHT = width * 0.5625; // 16:9 aspect ratio
 
+/**
+ * VideoDetailScreen Component
+ * 
+ * Main component for displaying and playing video content.
+ * Integrates with react-native-video v7 beta using NitroModules architecture.
+ * 
+ * @param {VideoDetailScreenProps} props - Component props
+ * @returns {JSX.Element} Video detail screen with player and metadata
+ */
 export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   navigation,
   route,
@@ -41,10 +66,13 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [videoError, setVideoError] = useState<string | null>(null);
 
+  // Initialize video player with HLS stream
+  // Using react-native-video v7 API with useVideoPlayer hook
   const player = useVideoPlayer({
     uri: 'https://bitmovin-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
   });
 
+  // Fetch video details from YouTube API when videoId changes
   useEffect(() => {
     if (!videoId) {
       setError('Video ID is missing');
@@ -69,6 +97,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
     fetchVideoDetails();
   }, [videoId]);
 
+  // Auto-play video when details are loaded and player is ready
   useEffect(() => {
     if (player && !loading && videoDetail) {
       player.play();

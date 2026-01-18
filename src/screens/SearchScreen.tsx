@@ -1,3 +1,19 @@
+/**
+ * Search Screen
+ * 
+ * Advanced search interface with live search, lazy loading, and sorting capabilities.
+ * 
+ * Features:
+ * - Live search with debounce (500ms) for optimal performance
+ * - Lazy loading: displays 10 results initially, loads more on demand
+ * - Sort options: latest upload, oldest upload, most popular
+ * - Shows all videos by default when no query is entered
+ * - Result count display and search query tracking
+ * - Optimized with useCallback and useMemo for performance
+ * 
+ * @module SearchScreen
+ */
+
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import {
   View,
@@ -29,9 +45,16 @@ interface SearchScreenProps {
   route: SearchScreenRouteProp;
 }
 
-const INITIAL_DISPLAY_COUNT = 10;
-const LOAD_MORE_COUNT = 10;
+// Lazy loading configuration
+const INITIAL_DISPLAY_COUNT = 10; // Number of videos to show initially
+const LOAD_MORE_COUNT = 10; // Number of additional videos to load per "Show more" click
+const DEBOUNCE_DELAY = 500; // Debounce delay for live search in milliseconds
 
+/**
+ * Converts internal sort option to YouTube API sort order
+ * @param {SortOption} sort - Internal sort option
+ * @returns {SortOrder} YouTube API sort order
+ */
 const getSortOrder = (sort: SortOption): SortOrder => {
   switch (sort) {
     case 'date':
@@ -45,6 +68,11 @@ const getSortOrder = (sort: SortOption): SortOrder => {
   }
 };
 
+/**
+ * Gets human-readable label for sort option
+ * @param {SortOption} sort - Sort option
+ * @returns {string} Display label
+ */
 const getSortLabel = (sort: SortOption): string => {
   switch (sort) {
     case 'date':
@@ -96,6 +124,10 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
     setDisplayedVideos(displayed);
   }, [allVideos, displayCount]);
 
+  /**
+   * Loads popular videos sorted by view count.
+   * Used as default content when no search query is provided.
+   */
   const loadPopularVideos = async () => {
     setLoading(true);
     setError(null);
@@ -112,6 +144,14 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
     }
   };
 
+  /**
+   * Performs video search with the given query and sort option.
+   * Fetches up to 50 results and handles sorting (including reverse for oldest).
+   * Resets display count to initial value after new search.
+   * 
+   * @param {string} query - Search query string
+   * @param {SortOption} sort - Sort option to apply
+   */
   const performSearch = async (query: string, sort: SortOption) => {
     if (!query.trim()) {
       loadPopularVideos();
@@ -140,6 +180,13 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
     }
   };
 
+  /**
+   * Handles live search input changes with debounce.
+   * Debounces API calls to avoid excessive requests while user is typing.
+   * Uses 500ms delay before triggering search.
+   * 
+   * @param {string} query - Current search query from input
+   */
   const handleQueryChange = useCallback((query: string) => {
     setSearchQuery(query);
     setIsTyping(true);
@@ -154,7 +201,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
       } else {
         loadPopularVideos();
       }
-    }, 500);
+    }, DEBOUNCE_DELAY);
   }, [sortOption]);
 
   const handleSearch = (query: string) => {

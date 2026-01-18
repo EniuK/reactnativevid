@@ -1,3 +1,18 @@
+/**
+ * Home Screen
+ * 
+ * Main screen displaying categorized video lists and search functionality.
+ * 
+ * Features:
+ * - Four horizontal video lists by category (React Native, React, TypeScript, JavaScript)
+ * - Search input in header for quick navigation to search screen
+ * - Settings icon for accessing user preferences
+ * - "Show more" functionality for each category
+ * - Parallel video fetching for all categories
+ * 
+ * @module HomeScreen
+ */
+
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -44,6 +59,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     JavaScript: true,
   });
 
+  // Fetch videos for all categories in parallel on component mount
   useEffect(() => {
     const fetchCategoryVideos = async () => {
       const promises = CATEGORIES.map(async (category) => {
