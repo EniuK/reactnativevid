@@ -9,9 +9,24 @@
 
 import axios from 'axios';
 import Constants from 'expo-constants';
+import NetInfo from '@react-native-community/netinfo';
 import { YouTubeApiResponse, YouTubeVideo, VideoDetail } from '../types/youtube';
 
 const YOUTUBE_API_BASE_URL = 'https://www.googleapis.com/youtube/v3';
+
+/**
+ * Checks if device has internet connection
+ * @returns {Promise<boolean>} True if connected to internet, false otherwise
+ */
+const checkInternetConnection = async (): Promise<boolean> => {
+  try {
+    const state = await NetInfo.fetch();
+    return state.isConnected === true && state.isInternetReachable === true;
+  } catch (error) {
+    console.warn('Error checking network connection:', error);
+    return false;
+  }
+};
 
 /**
  * Retrieves the YouTube API key from Expo configuration.
@@ -56,6 +71,13 @@ export const searchVideos = async (
   order: SortOrder = 'relevance'
 ): Promise<YouTubeVideo[]> => {
   try {
+    // Check internet connection before making request
+    const isConnected = await checkInternetConnection();
+    if (!isConnected) {
+      console.warn('No internet connection. Cannot fetch videos.');
+      return [];
+    }
+
     const apiKey = getApiKey();
     const response = await axios.get<YouTubeApiResponse>(
       `${YOUTUBE_API_BASE_URL}/search`,
@@ -68,10 +90,17 @@ export const searchVideos = async (
           order,
           key: apiKey,
         },
+        timeout: 10000, // 10 second timeout
       }
     );
     return response.data.items || [];
   } catch (error: any) {
+    // Handle network errors (no internet, timeout, etc.)
+    if (error.code === 'NETWORK_ERROR' || error.message === 'Network Error' || !error.response) {
+      console.warn('Network error: No internet connection or request timeout');
+      return [];
+    }
+
     if (error.response?.status === 403) {
       const errorMessage = error.response?.data?.error?.message || 'Unknown error';
       console.warn('YouTube API 403 Forbidden Error:', {
@@ -79,7 +108,6 @@ export const searchVideos = async (
         errorMessage,
         suggestion: 'Please check: 1) API key is correct, 2) YouTube Data API v3 is enabled in Google Cloud Console, 3) API key has proper permissions.',
       });
-      // Return empty array instead of throwing to prevent app crashes
       return [];
     }
     if (error.response?.status === 400) {
@@ -90,8 +118,11 @@ export const searchVideos = async (
       console.warn('YouTube API 429 Too Many Requests: Rate limit exceeded');
       return [];
     }
+    if (error.response?.status >= 500) {
+      console.warn('YouTube API Server Error:', error.response?.status);
+      return [];
+    }
     console.error('Error fetching videos:', error);
-    // Return empty array instead of throwing to prevent app crashes
     return [];
   }
 };
@@ -110,6 +141,13 @@ export const getPopularVideos = async (
   maxResults: number = 20
 ): Promise<YouTubeVideo[]> => {
   try {
+    // Check internet connection before making request
+    const isConnected = await checkInternetConnection();
+    if (!isConnected) {
+      console.warn('No internet connection. Cannot fetch popular videos.');
+      return [];
+    }
+
     const apiKey = getApiKey();
     const response = await axios.get<YouTubeApiResponse>(
       `${YOUTUBE_API_BASE_URL}/search`,
@@ -122,10 +160,17 @@ export const getPopularVideos = async (
           order: 'viewCount',
           key: apiKey,
         },
+        timeout: 10000, // 10 second timeout
       }
     );
     return response.data.items || [];
   } catch (error: any) {
+    // Handle network errors (no internet, timeout, etc.)
+    if (error.code === 'NETWORK_ERROR' || error.message === 'Network Error' || !error.response) {
+      console.warn('Network error: No internet connection or request timeout');
+      return [];
+    }
+
     if (error.response?.status === 403) {
       const errorMessage = error.response?.data?.error?.message || 'Unknown error';
       console.warn('YouTube API 403 Forbidden Error:', {
@@ -133,7 +178,6 @@ export const getPopularVideos = async (
         errorMessage,
         suggestion: 'Please check: 1) API key is correct, 2) YouTube Data API v3 is enabled in Google Cloud Console, 3) API key has proper permissions.',
       });
-      // Return empty array instead of throwing to prevent app crashes
       return [];
     }
     if (error.response?.status === 400) {
@@ -144,8 +188,11 @@ export const getPopularVideos = async (
       console.warn('YouTube API 429 Too Many Requests: Rate limit exceeded');
       return [];
     }
+    if (error.response?.status >= 500) {
+      console.warn('YouTube API Server Error:', error.response?.status);
+      return [];
+    }
     console.error('Error fetching popular videos:', error);
-    // Return empty array instead of throwing to prevent app crashes
     return [];
   }
 };
@@ -165,6 +212,12 @@ export const getPopularVideos = async (
  */
 export const getVideoDetails = async (videoId: string): Promise<VideoDetail> => {
   try {
+    // Check internet connection before making request
+    const isConnected = await checkInternetConnection();
+    if (!isConnected) {
+      throw new Error('No internet connection. Cannot load video details.');
+    }
+
     const apiKey = getApiKey();
     const response = await axios.get<{ 
       items: Array<{ 
@@ -180,6 +233,7 @@ export const getVideoDetails = async (videoId: string): Promise<VideoDetail> => 
           id: videoId,
           key: apiKey,
         },
+        timeout: 10000, // 10 second timeout
       }
     );
     
@@ -197,6 +251,14 @@ export const getVideoDetails = async (videoId: string): Promise<VideoDetail> => 
       likeCount: video.statistics?.likeCount,
     };
   } catch (error: any) {
+    // Handle network errors (no internet, timeout, etc.)
+    if (error.code === 'NETWORK_ERROR' || error.message === 'Network Error' || !error.response) {
+      if (error.message && error.message.includes('No internet connection')) {
+        throw error; // Re-throw our custom message
+      }
+      throw new Error('No internet connection. Cannot load video details.');
+    }
+
     if (error.response?.status === 403) {
       console.warn('YouTube API 403 Forbidden Error when fetching video details');
       throw new Error('Unable to load video details. Please check your API configuration.');
@@ -204,7 +266,10 @@ export const getVideoDetails = async (videoId: string): Promise<VideoDetail> => 
     if (error.response?.status === 404) {
       throw new Error('Video not found');
     }
+    if (error.response?.status >= 500) {
+      throw new Error('Server error. Please try again later.');
+    }
     console.error('Error fetching video details:', error);
-    throw error;
+    throw new Error('Failed to load video details. Please try again.');
   }
 };

@@ -27,7 +27,9 @@ import { CompositeNavigationProp } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { SearchInput } from '../components/SearchInput';
 import { CategoryRow } from '../components/CategoryRow';
+import { NoInternetView } from '../components/NoInternetView';
 import { SettingsIcon } from '../components/icons/SvgIcon';
+import { useNetworkState } from '../hooks/useNetworkState';
 import { searchVideos } from '../api/youtubeApi';
 import { YouTubeVideo } from '../types/youtube';
 import { CATEGORIES, Category } from '../constants/categories';
@@ -44,6 +46,7 @@ interface HomeScreenProps {
 }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+  const networkState = useNetworkState();
   const [categoryVideos, setCategoryVideos] = useState<
     Record<Category, YouTubeVideo[]>
   >({
@@ -58,6 +61,30 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     TypeScript: true,
     JavaScript: true,
   });
+
+  /**
+   * Handles retry when internet connection is restored
+   */
+  const handleRetry = () => {
+    if (networkState.isConnected) {
+      // Re-fetch videos if connection is restored
+      const fetchCategoryVideos = async () => {
+        const promises = CATEGORIES.map(async (category) => {
+          try {
+            setLoading((prev) => ({ ...prev, [category]: true }));
+            const videos = await searchVideos(category, 10);
+            setCategoryVideos((prev) => ({ ...prev, [category]: videos }));
+          } catch (error) {
+            console.error(`Error fetching ${category} videos:`, error);
+          } finally {
+            setLoading((prev) => ({ ...prev, [category]: false }));
+          }
+        });
+        await Promise.all(promises);
+      };
+      fetchCategoryVideos();
+    }
+  };
 
   // Fetch videos for all categories in parallel on component mount
   useEffect(() => {
@@ -116,6 +143,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const handleSettingsPress = () => {
     navigation.navigate('Settings');
   };
+
+  // Show no internet view if not connected
+  if (networkState.isConnected === false) {
+    return <NoInternetView onRetry={handleRetry} />;
+  }
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>

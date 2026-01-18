@@ -31,6 +31,8 @@ import { RouteProp } from '@react-navigation/native';
 import { SearchInput } from '../components/SearchInput';
 import { SearchVideoCard } from '../components/SearchVideoCard';
 import { SortModal, SortOption } from '../components/SortModal';
+import { NoInternetView } from '../components/NoInternetView';
+import { useNetworkState } from '../hooks/useNetworkState';
 import { searchVideos, getPopularVideos, SortOrder } from '../api/youtubeApi';
 import { YouTubeVideo } from '../types/youtube';
 import { RootStackParamList, MainTabParamList } from '../navigation/RootNavigator';
@@ -92,6 +94,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
   navigation,
   route,
 }) => {
+  const networkState = useNetworkState();
   const [allVideos, setAllVideos] = useState<YouTubeVideo[]>([]);
   const [displayedVideos, setDisplayedVideos] = useState<YouTubeVideo[]>([]);
   const [displayCount, setDisplayCount] = useState(INITIAL_DISPLAY_COUNT);
@@ -103,6 +106,17 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
   const [isTyping, setIsTyping] = useState(false);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const initialQuery = route.params?.query || '';
+
+  /**
+   * Handles retry when internet connection is restored
+   */
+  const handleRetry = () => {
+    if (networkState.isConnected && initialQuery) {
+      performSearch(initialQuery, sortOption);
+    } else if (networkState.isConnected) {
+      loadPopularVideos();
+    }
+  };
 
   useEffect(() => {
     if (initialQuery) {
@@ -271,6 +285,11 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
     }
     return null;
   };
+
+  // Show no internet view if not connected
+  if (networkState.isConnected === false) {
+    return <NoInternetView onRetry={handleRetry} />;
+  }
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>

@@ -27,16 +27,34 @@ export const SearchInput: React.FC<SearchInputProps> = ({
     setQuery(defaultValue);
   }, [defaultValue]);
 
+  /**
+   * Validates and sanitizes search input
+   * Prevents extremely long queries and dangerous characters
+   * @param {string} text - Input text to validate
+   * @returns {string} Sanitized text
+   */
+  const sanitizeInput = (text: string): string => {
+    // Limit length to 200 characters to prevent performance issues
+    if (text.length > 200) {
+      return text.substring(0, 200);
+    }
+    // Remove control characters but allow normal text
+    return text.replace(/[\x00-\x1F\x7F]/g, '');
+  };
+
   const handleChange = (text: string) => {
-    setQuery(text);
+    const sanitized = sanitizeInput(text);
+    setQuery(sanitized);
     if (onQueryChange) {
-      onQueryChange(text);
+      onQueryChange(sanitized);
     }
   };
 
   const handleSubmit = () => {
-    if (query.trim()) {
-      onSearch(query.trim());
+    const trimmedQuery = query.trim();
+    // Validate query is not empty and has reasonable length
+    if (trimmedQuery && trimmedQuery.length >= 1 && trimmedQuery.length <= 200) {
+      onSearch(trimmedQuery);
     }
   };
 

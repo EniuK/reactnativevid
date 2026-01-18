@@ -8,6 +8,7 @@ import {
   Poppins_600SemiBold,
   Poppins_700Bold,
 } from '@expo-google-fonts/poppins';
+import { ErrorBoundary } from './src/components/ErrorBoundary';
 import { RootNavigator } from './src/navigation/RootNavigator';
 
 export default function App() {
@@ -26,10 +27,12 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <RootNavigator />
-      <StatusBar style="auto" />
-    </NavigationContainer>
+    <ErrorBoundary>
+      <NavigationContainer>
+        <RootNavigator />
+        <StatusBar style="auto" />
+      </NavigationContainer>
+    </ErrorBoundary>
   );
 }
 
