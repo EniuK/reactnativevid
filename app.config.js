@@ -15,9 +15,11 @@ module.exports = {
       backgroundColor: '#ffffff',
     },
     ios: {
+      bundleIdentifier: 'com.anonymous.twgvideoapp',
       supportsTablet: true,
     },
     android: {
+      package: 'com.anonymous.twgvideoapp',
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#ffffff',
@@ -28,7 +30,20 @@ module.exports = {
     web: {
       favicon: './assets/favicon.png',
     },
-    plugins: ['react-native-video', 'expo-font'],
+    plugins: [
+      [
+        'react-native-video',
+        {
+          enableAndroidPictureInPicture: true,
+          enableBackgroundAudio: true,
+          androidExtensions: {
+            useExoplayerDash: true,
+            useExoplayerHls: true,
+          },
+        },
+      ],
+      'expo-font',
+    ],
     extra: {
       youtubeApiKey: process.env.YOUTUBE_API_KEY,
     },
