@@ -233,6 +233,12 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
     setDisplayCount(newCount);
   };
 
+  /**
+   * Handles video card press - navigates to video detail screen.
+   * Validates videoId before navigation to prevent errors.
+   * 
+   * @param {YouTubeVideo} video - Video object to navigate to
+   */
   const handleVideoPress = (video: YouTubeVideo) => {
     if (video?.id?.videoId) {
       navigation.navigate('VideoDetail', { videoId: video.id.videoId });

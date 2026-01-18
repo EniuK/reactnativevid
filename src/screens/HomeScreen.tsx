@@ -78,22 +78,41 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     fetchCategoryVideos();
   }, []);
 
+  /**
+   * Handles search input submission - navigates to search screen with query.
+   * 
+   * @param {string} query - Search query from input
+   */
   const handleSearch = (query: string) => {
     if (query.trim()) {
       navigation.navigate('Search', { query: query.trim() });
     }
   };
 
+  /**
+   * Handles video card press - navigates to video detail screen.
+   * Validates videoId before navigation.
+   * 
+   * @param {YouTubeVideo} video - Video object to navigate to
+   */
   const handleVideoPress = (video: YouTubeVideo) => {
     if (video?.id?.videoId) {
       navigation.navigate('VideoDetail', { videoId: video.id.videoId });
     }
   };
 
+  /**
+   * Handles "Show more" button press - navigates to search screen with category as query.
+   * 
+   * @param {Category} category - Category name to search for
+   */
   const handleShowMore = (category: Category) => {
     navigation.navigate('Search', { query: category });
   };
 
+  /**
+   * Handles settings icon press - navigates to settings screen.
+   */
   const handleSettingsPress = () => {
     navigation.navigate('Settings');
   };
