@@ -213,10 +213,21 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
     }
   };
 
+  /**
+   * Handles sort option change from sort modal.
+   * Triggers new search with updated sort order.
+   * 
+   * @param {SortOption} sort - Selected sort option
+   */
   const handleSortChange = (sort: SortOption) => {
     setSortOption(sort);
   };
 
+  /**
+   * Loads additional videos for lazy loading.
+   * Increments display count by LOAD_MORE_COUNT (10 videos).
+   * Used by "Show more" button at the bottom of the list.
+   */
   const handleShowMore = () => {
     const newCount = displayCount + LOAD_MORE_COUNT;
     setDisplayCount(newCount);
