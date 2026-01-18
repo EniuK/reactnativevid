@@ -27,6 +27,16 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
     navigation.replace('MainTabs');
   };
 
+  const handleTermsPress = () => {
+    // Placeholder link - can be opened in browser or handled differently
+    console.log('Terms and Conditions pressed');
+  };
+
+  const handlePrivacyPress = () => {
+    // Placeholder link - can be opened in browser or handled differently
+    console.log('Privacy Policy pressed');
+  };
+
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
       <View style={styles.container}>
@@ -58,9 +68,13 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
         <View style={styles.footer}>
           <Text style={styles.footerText}>By continuing you agree with</Text>
           <View style={styles.linksContainer}>
-            <Text style={styles.linkText}>Terms and Conditions</Text>
+            <TouchableOpacity onPress={handleTermsPress}>
+              <Text style={styles.linkText}>Terms and Conditions</Text>
+            </TouchableOpacity>
             <Text style={styles.footerText}> and </Text>
-            <Text style={styles.linkText}>Privacy Policy</Text>
+            <TouchableOpacity onPress={handlePrivacyPress}>
+              <Text style={styles.linkText}>Privacy Policy</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

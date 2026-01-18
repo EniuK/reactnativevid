@@ -40,4 +40,6 @@ export interface VideoDetail {
   title: string; // Video title
   description: string; // Full video description
   channelTitle: string; // Channel name
+  viewCount?: string; // Number of views
+  likeCount?: string; // Number of likes
 }

@@ -125,11 +125,17 @@ export const getPopularVideos = async (
  */
 export const getVideoDetails = async (videoId: string): Promise<VideoDetail> => {
   try {
-    const response = await axios.get<{ items: Array<{ id: string; snippet: { title: string; description: string; channelTitle: string } }> }>(
+    const response = await axios.get<{ 
+      items: Array<{ 
+        id: string; 
+        snippet: { title: string; description: string; channelTitle: string };
+        statistics?: { viewCount?: string; likeCount?: string };
+      }> 
+    }>(
       `${YOUTUBE_API_BASE_URL}/videos`,
       {
         params: {
-          part: 'snippet',
+          part: 'snippet,statistics',
           id: videoId,
           key: getApiKey(),
         },
@@ -146,6 +152,8 @@ export const getVideoDetails = async (videoId: string): Promise<VideoDetail> => 
       title: video.snippet.title,
       description: video.snippet.description,
       channelTitle: video.snippet.channelTitle,
+      viewCount: video.statistics?.viewCount,
+      likeCount: video.statistics?.likeCount,
     };
   } catch (error) {
     console.error('Error fetching video details:', error);

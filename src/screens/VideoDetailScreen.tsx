@@ -35,6 +35,7 @@ import { VideoView, VideoViewRef, useVideoPlayer } from 'react-native-video';
 import { getVideoDetails } from '../api/youtubeApi';
 import { VideoDetail } from '../types/youtube';
 import { RootStackParamList } from '../navigation/RootNavigator';
+import { ViewsIcon, LikesIcon } from '../components/icons/SvgIcon';
 
 type VideoDetailScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -55,9 +56,21 @@ type TabType = 'Details' | 'Notes';
 
 /**
  * Storage key prefix for video notes
- * Format: `video_note_${videoId}`
+ * Format: `video_notes_${videoId}`
  */
-const getNoteStorageKey = (videoId: string): string => `video_note_${videoId}`;
+const getNotesStorageKey = (videoId: string): string => `video_notes_${videoId}`;
+
+/**
+ * Formats a number with commas for display (e.g., 25266952 -> "25,266,952")
+ * @param {string} numStr - Number as string
+ * @returns {string} Formatted number with commas
+ */
+const formatNumber = (numStr?: string): string => {
+  if (!numStr) return '0';
+  const num = parseInt(numStr, 10);
+  if (isNaN(num)) return '0';
+  return num.toLocaleString('en-US');
+};
 
 /**
  * VideoDetailScreen Component
@@ -79,7 +92,8 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [videoError, setVideoError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>('Details');
-  const [note, setNote] = useState<string>('');
+  const [notes, setNotes] = useState<string[]>([]);
+  const [newNote, setNewNote] = useState<string>('');
   const [noteSaving, setNoteSaving] = useState(false);
 
   // Initialize video player with HLS stream
@@ -89,36 +103,51 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   });
 
   /**
-   * Loads saved note for the current video from AsyncStorage
+   * Loads saved notes for the current video from AsyncStorage
    * @param {string} videoId - The video ID to load notes for
    */
-  const loadNote = async (videoId: string) => {
+  const loadNotes = async (videoId: string) => {
     try {
-      const storageKey = getNoteStorageKey(videoId);
-      const savedNote = await AsyncStorage.getItem(storageKey);
-      if (savedNote) {
-        setNote(savedNote);
+      const storageKey = getNotesStorageKey(videoId);
+      const savedNotesJson = await AsyncStorage.getItem(storageKey);
+      if (savedNotesJson) {
+        const savedNotes = JSON.parse(savedNotesJson);
+        if (Array.isArray(savedNotes)) {
+          setNotes(savedNotes);
+        }
       }
     } catch (err) {
-      console.error('Error loading note:', err);
+      console.error('Error loading notes:', err);
     }
   };
 
   /**
-   * Saves note for the current video to AsyncStorage
+   * Saves notes array for the current video to AsyncStorage
    * @param {string} videoId - The video ID to save notes for
-   * @param {string} noteText - The note text to save
+   * @param {string[]} notesArray - The notes array to save
    */
-  const saveNote = async (videoId: string, noteText: string) => {
+  const saveNotes = async (videoId: string, notesArray: string[]) => {
     try {
       setNoteSaving(true);
-      const storageKey = getNoteStorageKey(videoId);
-      await AsyncStorage.setItem(storageKey, noteText);
+      const storageKey = getNotesStorageKey(videoId);
+      await AsyncStorage.setItem(storageKey, JSON.stringify(notesArray));
     } catch (err) {
-      console.error('Error saving note:', err);
+      console.error('Error saving notes:', err);
     } finally {
       setNoteSaving(false);
     }
+  };
+
+  /**
+   * Adds a new note to the notes array
+   */
+  const handleAddNote = () => {
+    if (!newNote.trim() || !videoId) return;
+    
+    const updatedNotes = [...notes, newNote.trim()];
+    setNotes(updatedNotes);
+    setNewNote('');
+    saveNotes(videoId, updatedNotes);
   };
 
   // Fetch video details from YouTube API when videoId changes
@@ -135,8 +164,8 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
         setError(null);
         const details = await getVideoDetails(videoId);
         setVideoDetail(details);
-        // Load saved note for this video
-        await loadNote(videoId);
+        // Load saved notes for this video
+        await loadNotes(videoId);
       } catch (err) {
         setError('Failed to load video details. Please try again.');
         console.error('Video detail error:', err);
@@ -148,16 +177,6 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
     fetchVideoDetails();
   }, [videoId]);
 
-  // Save note automatically when it changes (debounced)
-  useEffect(() => {
-    if (!videoId || !note) return;
-
-    const timer = setTimeout(() => {
-      saveNote(videoId, note);
-    }, 1000); // Debounce: save 1 second after user stops typing
-
-    return () => clearTimeout(timer);
-  }, [note, videoId]);
 
   // Auto-play video when details are loaded and player is ready
   useEffect(() => {
@@ -247,22 +266,59 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
 
           {/* Tab Content */}
           {activeTab === 'Details' ? (
-            <Text style={styles.description}>{videoDetail.description}</Text>
+            <>
+              <Text style={styles.description}>{videoDetail.description}</Text>
+              {(videoDetail.viewCount || videoDetail.likeCount) && (
+                <View style={styles.statisticsContainer}>
+                  {videoDetail.viewCount && (
+                    <View style={styles.statItem}>
+                      <ViewsIcon width={20} height={20} color="#2B2D42" />
+                      <Text style={styles.statText}>
+                        {formatNumber(videoDetail.viewCount)} views
+                      </Text>
+                    </View>
+                  )}
+                  {videoDetail.likeCount && (
+                    <View style={styles.statItem}>
+                      <LikesIcon width={20} height={20} color="#2B2D42" />
+                      <Text style={styles.statText}>
+                        {formatNumber(videoDetail.likeCount)} likes
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              )}
+            </>
           ) : (
             <View style={styles.notesContainer}>
-              <Text style={styles.notesLabel}>Your notes for this video:</Text>
-              <TextInput
-                style={styles.notesInput}
-                value={note}
-                onChangeText={setNote}
-                placeholder="Add your notes here..."
-                placeholderTextColor="#999"
-                multiline
-                textAlignVertical="top"
-              />
-              {noteSaving && (
-                <Text style={styles.savingText}>Saving...</Text>
+              {notes.length > 0 && (
+                <View style={styles.notesList}>
+                  {notes.map((note, index) => (
+                    <View key={index} style={styles.noteItem}>
+                      <Text style={styles.noteText}>{note}</Text>
+                    </View>
+                  ))}
+                </View>
               )}
+              <View style={styles.addNoteContainer}>
+                <TextInput
+                  style={styles.noteInput}
+                  value={newNote}
+                  onChangeText={setNewNote}
+                  placeholder="Enter notes."
+                  placeholderTextColor="#999"
+                  multiline
+                  textAlignVertical="top"
+                />
+                <TouchableOpacity
+                  style={styles.addNoteButton}
+                  onPress={handleAddNote}
+                  disabled={!newNote.trim() || noteSaving}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.addNoteButtonText}>Add note</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         </View>
@@ -367,17 +423,44 @@ const styles = StyleSheet.create({
     color: '#2B2D42',
     lineHeight: 22,
   },
+  statisticsContainer: {
+    flexDirection: 'row',
+    gap: 24,
+    marginTop: 16,
+  },
+  statItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  statText: {
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
+    color: '#2B2D42',
+  },
   notesContainer: {
     marginTop: 8,
   },
-  notesLabel: {
-    fontSize: 14,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#2B2D42',
-    marginBottom: 8,
+  notesList: {
+    marginBottom: 16,
   },
-  notesInput: {
-    minHeight: 200,
+  noteItem: {
+    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 12,
+  },
+  noteText: {
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
+    color: '#2B2D42',
+    lineHeight: 20,
+  },
+  addNoteContainer: {
+    marginTop: 8,
+  },
+  noteInput: {
+    minHeight: 100,
     fontSize: 14,
     fontFamily: 'Poppins-Regular',
     color: '#2B2D42',
@@ -386,13 +469,18 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     backgroundColor: '#f9f9f9',
+    marginBottom: 12,
   },
-  savingText: {
-    fontSize: 12,
-    fontFamily: 'Poppins-Regular',
-    color: '#666',
-    marginTop: 8,
-    textAlign: 'right',
+  addNoteButton: {
+    backgroundColor: '#007AFF',
+    borderRadius: 8,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  addNoteButtonText: {
+    fontSize: 16,
+    fontFamily: 'Poppins-SemiBold',
+    color: '#fff',
   },
   errorText: {
     fontSize: 16,
