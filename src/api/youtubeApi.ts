@@ -56,6 +56,7 @@ export const searchVideos = async (
   order: SortOrder = 'relevance'
 ): Promise<YouTubeVideo[]> => {
   try {
+    const apiKey = getApiKey();
     const response = await axios.get<YouTubeApiResponse>(
       `${YOUTUBE_API_BASE_URL}/search`,
       {
@@ -65,14 +66,33 @@ export const searchVideos = async (
           type: 'video',
           maxResults,
           order,
-          key: getApiKey(),
+          key: apiKey,
         },
       }
     );
-    return response.data.items;
-  } catch (error) {
+    return response.data.items || [];
+  } catch (error: any) {
+    if (error.response?.status === 403) {
+      const errorMessage = error.response?.data?.error?.message || 'Unknown error';
+      console.warn('YouTube API 403 Forbidden Error:', {
+        message: 'API key may be invalid, missing permissions, or YouTube Data API v3 not enabled',
+        errorMessage,
+        suggestion: 'Please check: 1) API key is correct, 2) YouTube Data API v3 is enabled in Google Cloud Console, 3) API key has proper permissions.',
+      });
+      // Return empty array instead of throwing to prevent app crashes
+      return [];
+    }
+    if (error.response?.status === 400) {
+      console.warn('YouTube API 400 Bad Request:', error.response?.data?.error?.message);
+      return [];
+    }
+    if (error.response?.status === 429) {
+      console.warn('YouTube API 429 Too Many Requests: Rate limit exceeded');
+      return [];
+    }
     console.error('Error fetching videos:', error);
-    throw error;
+    // Return empty array instead of throwing to prevent app crashes
+    return [];
   }
 };
 
@@ -90,6 +110,7 @@ export const getPopularVideos = async (
   maxResults: number = 20
 ): Promise<YouTubeVideo[]> => {
   try {
+    const apiKey = getApiKey();
     const response = await axios.get<YouTubeApiResponse>(
       `${YOUTUBE_API_BASE_URL}/search`,
       {
@@ -99,14 +120,33 @@ export const getPopularVideos = async (
           type: 'video',
           maxResults,
           order: 'viewCount',
-          key: getApiKey(),
+          key: apiKey,
         },
       }
     );
-    return response.data.items;
-  } catch (error) {
+    return response.data.items || [];
+  } catch (error: any) {
+    if (error.response?.status === 403) {
+      const errorMessage = error.response?.data?.error?.message || 'Unknown error';
+      console.warn('YouTube API 403 Forbidden Error:', {
+        message: 'API key may be invalid, missing permissions, or YouTube Data API v3 not enabled',
+        errorMessage,
+        suggestion: 'Please check: 1) API key is correct, 2) YouTube Data API v3 is enabled in Google Cloud Console, 3) API key has proper permissions.',
+      });
+      // Return empty array instead of throwing to prevent app crashes
+      return [];
+    }
+    if (error.response?.status === 400) {
+      console.warn('YouTube API 400 Bad Request:', error.response?.data?.error?.message);
+      return [];
+    }
+    if (error.response?.status === 429) {
+      console.warn('YouTube API 429 Too Many Requests: Rate limit exceeded');
+      return [];
+    }
     console.error('Error fetching popular videos:', error);
-    throw error;
+    // Return empty array instead of throwing to prevent app crashes
+    return [];
   }
 };
 
@@ -125,6 +165,7 @@ export const getPopularVideos = async (
  */
 export const getVideoDetails = async (videoId: string): Promise<VideoDetail> => {
   try {
+    const apiKey = getApiKey();
     const response = await axios.get<{ 
       items: Array<{ 
         id: string; 
@@ -137,7 +178,7 @@ export const getVideoDetails = async (videoId: string): Promise<VideoDetail> => 
         params: {
           part: 'snippet,statistics',
           id: videoId,
-          key: getApiKey(),
+          key: apiKey,
         },
       }
     );
@@ -155,7 +196,14 @@ export const getVideoDetails = async (videoId: string): Promise<VideoDetail> => 
       viewCount: video.statistics?.viewCount,
       likeCount: video.statistics?.likeCount,
     };
-  } catch (error) {
+  } catch (error: any) {
+    if (error.response?.status === 403) {
+      console.warn('YouTube API 403 Forbidden Error when fetching video details');
+      throw new Error('Unable to load video details. Please check your API configuration.');
+    }
+    if (error.response?.status === 404) {
+      throw new Error('Video not found');
+    }
     console.error('Error fetching video details:', error);
     throw error;
   }
