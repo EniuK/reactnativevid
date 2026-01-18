@@ -25,20 +25,22 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { CompositeNavigationProp } from '@react-navigation/native';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
 import { SearchInput } from '../components/SearchInput';
 import { SearchVideoCard } from '../components/SearchVideoCard';
 import { SortModal, SortOption } from '../components/SortModal';
 import { searchVideos, getPopularVideos, SortOrder } from '../api/youtubeApi';
 import { YouTubeVideo } from '../types/youtube';
-import { RootStackParamList } from '../navigation/RootNavigator';
+import { RootStackParamList, MainTabParamList } from '../navigation/RootNavigator';
 
-type SearchScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Search'
+type SearchScreenNavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<MainTabParamList, 'Search'>,
+  NativeStackNavigationProp<RootStackParamList>
 >;
 
-type SearchScreenRouteProp = RouteProp<RootStackParamList, 'Search'>;
+type SearchScreenRouteProp = RouteProp<MainTabParamList, 'Search'>;
 
 interface SearchScreenProps {
   navigation: SearchScreenNavigationProp;
