@@ -17,21 +17,38 @@ interface VideoCardProps {
   onPress: () => void;
 }
 
+const formatDate = (dateString: string): string => {
+  try {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  } catch {
+    return '12.08.2024';
+  }
+};
+
 export const VideoCard: React.FC<VideoCardProps> = ({ video, onPress }) => {
+  const publishedDate = formatDate(video.snippet.publishedAt || new Date().toISOString());
+
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
-      <Image
-        source={{ uri: video.snippet.thumbnails.medium.url }}
-        style={styles.thumbnail}
-        resizeMode="cover"
-      />
+      <View style={styles.thumbnailContainer}>
+        <Image
+          source={{ uri: video.snippet.thumbnails.medium.url }}
+          style={styles.thumbnail}
+          resizeMode="cover"
+        />
+        <View style={styles.banner}>
+          <Text style={styles.bannerText}>100 SECONDS OF</Text>
+        </View>
+      </View>
       <View style={styles.info}>
         <Text style={styles.title} numberOfLines={2}>
           {video.snippet.title}
         </Text>
-        <Text style={styles.channel} numberOfLines={1}>
-          {video.snippet.channelTitle}
-        </Text>
+        <Text style={styles.date}>{publishedDate}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -50,10 +67,30 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  thumbnail: {
+  thumbnailContainer: {
+    position: 'relative',
     width: '100%',
     height: CARD_WIDTH * 0.56,
+  },
+  thumbnail: {
+    width: '100%',
+    height: '100%',
     backgroundColor: '#f0f0f0',
+  },
+  banner: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#5DADE2',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+  },
+  bannerText: {
+    fontSize: 10,
+    fontFamily: 'Poppins-Bold',
+    color: '#fff',
+    textAlign: 'center',
   },
   info: {
     padding: 12,
@@ -61,12 +98,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontFamily: 'Poppins-SemiBold',
-    color: '#1a1a1a',
+    color: '#2B2D42',
     marginBottom: 4,
+    lineHeight: 20,
   },
-  channel: {
+  date: {
     fontSize: 12,
     fontFamily: 'Poppins-Regular',
     color: '#666',
+    textAlign: 'right',
   },
 });
