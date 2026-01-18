@@ -13,6 +13,7 @@ export interface YouTubeVideo {
   snippet: {
     title: string; // Video title
     description: string; // Video description
+    publishedAt: string; // Publication date
     thumbnails: {
       medium: {
         url: string; // URL to the medium-sized thumbnail image
