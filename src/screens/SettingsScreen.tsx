@@ -69,7 +69,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             <Switch
               value={reminderEnabled}
               onValueChange={setReminderEnabled}
-              trackColor={{ false: '#E0E0E0', true: '#007AFF' }}
+              trackColor={{ false: '#E0E0E0', true: '#2B2D42' }}
               thumbColor="#FFFFFF"
               ios_backgroundColor="#E0E0E0"
             />
