@@ -497,11 +497,13 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
             </>
           ) : (
             <View style={styles.notesContainer}>
+              {/* Display existing notes with timestamp in bottom-right corner */}
               {notes.length > 0 && (
                 <View style={styles.notesList}>
                   {notes.map((note, index) => (
                     <View key={index} style={styles.noteItem}>
                       <Text style={styles.noteText}>{note.text}</Text>
+                      {/* Timestamp positioned absolutely in bottom-right corner */}
                       <Text style={styles.noteTimestamp}>
                         {formatTime(note.timestamp)}
                       </Text>
@@ -509,6 +511,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
                   ))}
                 </View>
               )}
+              {/* Add new note input section with fixed width container */}
               <View style={styles.addNoteContainer}>
                 <TextInput
                   style={styles.noteInput}
@@ -751,7 +754,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
-    position: 'relative',
+    position: 'relative', // Required for absolute positioning of timestamp
     width: width * 0.95,
     alignSelf: 'center',
   },
@@ -760,11 +763,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     color: '#2B2D42',
     lineHeight: 20,
-    paddingRight: 60,
-    paddingBottom: 20,
+    paddingRight: 60, // Prevents text overlap with timestamp
+    paddingBottom: 20, // Ensures clear spacing between text and timestamp
   },
   noteTimestamp: {
-    position: 'absolute',
+    position: 'absolute', // Positioned in bottom-right corner of note item
     bottom: 12,
     right: 12,
     fontSize: 12,
@@ -775,7 +778,7 @@ const styles = StyleSheet.create({
   addNoteContainer: {
     marginTop: 8,
     alignItems: 'center',
-    width: 380,
+    width: 380, // Fixed width for consistent sizing across devices
     alignSelf: 'center',
   },
   noteInput: {
