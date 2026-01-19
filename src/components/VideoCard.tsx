@@ -40,9 +40,6 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, onPress }) => {
           style={styles.thumbnail}
           resizeMode="cover"
         />
-        <View style={styles.banner}>
-          <Text style={styles.bannerText}>100 SECONDS OF</Text>
-        </View>
       </View>
       <View style={styles.info}>
         <Text style={styles.title} numberOfLines={2}>
@@ -76,21 +73,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: '#f0f0f0',
-  },
-  banner: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#5DADE2',
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-  },
-  bannerText: {
-    fontSize: 10,
-    fontFamily: 'Poppins-Bold',
-    color: '#fff',
-    textAlign: 'center',
   },
   info: {
     padding: 12,

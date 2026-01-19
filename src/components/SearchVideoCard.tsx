@@ -42,9 +42,6 @@ export const SearchVideoCard: React.FC<SearchVideoCardProps> = ({
           style={styles.thumbnail}
           resizeMode="cover"
         />
-        <View style={styles.banner}>
-          <Text style={styles.bannerText}>100 SECONDS OF</Text>
-        </View>
       </View>
       <View style={styles.info}>
         <Text style={styles.channelName}>{video.snippet.channelTitle}</Text>
@@ -81,22 +78,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: '#1a1a1a',
-  },
-  banner: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#5DADE2',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  bannerText: {
-    fontSize: 12,
-    fontFamily: 'Poppins-Bold',
-    color: '#fff',
-    textAlign: 'center',
-    letterSpacing: 0.5,
   },
   info: {
     padding: 16,
