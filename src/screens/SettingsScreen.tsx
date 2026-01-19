@@ -148,9 +148,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   remindersTitle: {
-    fontSize: 18,
-    fontFamily: 'Poppins-Bold',
-    fontWeight: '700',
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
+    fontWeight: '400',
+    letterSpacing: 0.14,
     color: '#2B2D42',
     marginLeft: 12,
   },
