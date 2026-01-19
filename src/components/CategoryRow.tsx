@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     fontWeight: '400',
     color: '#2B2D42',
+    textDecorationLine: 'underline',
   },
   listContent: {
     paddingHorizontal: 16,
