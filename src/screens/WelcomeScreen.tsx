@@ -10,7 +10,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/RootNavigator';
-import { LogoIcon } from '../components/icons/LogoIcon';
 import { AppIcon } from '../components/icons/AppIcon';
 
 type WelcomeScreenNavigationProp = NativeStackNavigationProp<
@@ -40,10 +39,6 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
       <View style={styles.container}>
-        <View style={styles.logoContainer}>
-          <LogoIcon width={width * 0.8} height={(width * 0.8 * 116) / 292} />
-        </View>
-
         <View style={styles.iconContainer}>
           <AppIcon width={120} height={120} color="#343A40" />
         </View>
@@ -89,30 +84,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 24,
   },
-  logoContainer: {
-    alignItems: 'flex-start',
-    width: '100%',
-    paddingHorizontal: 24,
-    marginBottom: height * 0.08,
-  },
-  youtubeText: {
-    fontSize: 48,
-    fontFamily: 'Poppins-Bold',
-    color: '#fff',
-    lineHeight: 56,
-  },
-  learnText: {
-    fontSize: 32,
-    fontFamily: 'Poppins-Bold',
-    color: '#343A40',
-    marginTop: -8,
-    alignSelf: 'flex-end',
-    marginRight: 0,
-  },
   iconContainer: {
     marginVertical: height * 0.06,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: height * 0.08,
   },
   icon: {
     width: 120,
