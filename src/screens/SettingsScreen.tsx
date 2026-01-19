@@ -66,7 +66,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
               value={reminderEnabled}
               onValueChange={setReminderEnabled}
               trackColor={{ false: '#E0E0E0', true: '#007AFF' }}
-              thumbColor="#fff"
+              thumbColor="#FFFFFF"
+              ios_backgroundColor="#E0E0E0"
             />
           </View>
 
@@ -97,11 +98,11 @@ const styles = StyleSheet.create({
   },
   backButton: {
     marginRight: 16,
-    padding: 4,
   },
   backIcon: {
     fontSize: 24,
     color: '#2B2D42',
+    fontWeight: '400',
   },
   headerTitle: {
     fontSize: 20,
