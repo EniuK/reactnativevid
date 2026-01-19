@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Dimensions,
   Linking,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -39,6 +40,14 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
       <View style={styles.container}>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require('../../assets/logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </View>
+
         <View style={styles.iconContainer}>
           <AppIcon width={120} height={120} color="#343A40" />
         </View>
@@ -84,11 +93,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 24,
   },
+  logoContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    marginBottom: height * 0.08,
+    paddingHorizontal: 24,
+  },
+  logo: {
+    width: width * 0.8,
+    height: (width * 0.8 * 116) / 292,
+    maxWidth: 292,
+    maxHeight: 116,
+  },
   iconContainer: {
     marginVertical: height * 0.06,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: height * 0.08,
   },
   icon: {
     width: 120,
