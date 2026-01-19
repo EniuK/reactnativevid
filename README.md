@@ -160,13 +160,15 @@ twg-video-app/
 │   ├── api/           # Integracja z YouTube API
 │   ├── components/    # Komponenty UI (VideoCard, SearchInput, itp.)
 │   ├── constants/     # Stałe (kategorie, itp.)
+│   ├── hooks/         # Custom hooks (useNetworkState, itp.)
 │   ├── navigation/    # Konfiguracja nawigacji
 │   ├── screens/       # Ekrany aplikacji
 │   └── types/         # Definicje TypeScript
-├── assets/            # Obrazy, ikony
+├── assets/            # Obrazy, ikony SVG
 ├── android/           # Natywny kod Android
 ├── ios/               # Natywny kod iOS
-├── app.config.js      # Konfiguracja Expo
+├── app.config.js      # Konfiguracja Expo (dynamiczna z .env)
+├── app.json           # Konfiguracja Expo (statyczna)
 ├── .env               # Zmienne środowiskowe (nie w Git)
 └── package.json       # Zależności projektu
 ```
