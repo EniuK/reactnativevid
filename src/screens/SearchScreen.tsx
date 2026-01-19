@@ -105,46 +105,15 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
   const [showSortModal, setShowSortModal] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const hasInitialLoadedRef = useRef<boolean>(false);
   const initialQuery = route.params?.query || '';
-
-  /**
-   * Handles retry when internet connection is restored
-   */
-  const handleRetry = () => {
-    if (networkState.isConnected && initialQuery) {
-      performSearch(initialQuery, sortOption);
-    } else if (networkState.isConnected) {
-      loadPopularVideos();
-    }
-  };
-
-  useEffect(() => {
-    if (initialQuery) {
-      setSearchQuery(initialQuery);
-      performSearch(initialQuery, sortOption);
-    } else {
-      loadPopularVideos();
-    }
-  }, [initialQuery]);
-
-  useEffect(() => {
-    if (searchQuery) {
-      performSearch(searchQuery, sortOption);
-    } else {
-      loadPopularVideos();
-    }
-  }, [sortOption]);
-
-  useEffect(() => {
-    const displayed = allVideos.slice(0, displayCount);
-    setDisplayedVideos(displayed);
-  }, [allVideos, displayCount]);
 
   /**
    * Loads popular videos sorted by view count.
    * Used as default content when no search query is provided.
+   * Wrapped in useCallback to prevent unnecessary re-renders.
    */
-  const loadPopularVideos = async () => {
+  const loadPopularVideos = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -158,17 +127,18 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
       setLoading(false);
       setIsTyping(false);
     }
-  };
+  }, []);
 
   /**
    * Performs video search with the given query and sort option.
    * Fetches up to 50 results and handles sorting (including reverse for oldest).
    * Resets display count to initial value after new search.
+   * Wrapped in useCallback to prevent unnecessary re-renders.
    * 
    * @param {string} query - Search query string
    * @param {SortOption} sort - Sort option to apply
    */
-  const performSearch = async (query: string, sort: SortOption) => {
+  const performSearch = useCallback(async (query: string, sort: SortOption) => {
     if (!query.trim()) {
       loadPopularVideos();
       return;
@@ -194,7 +164,52 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
       setLoading(false);
       setIsTyping(false);
     }
-  };
+  }, [loadPopularVideos]);
+
+  /**
+   * Handles retry when internet connection is restored
+   */
+  const handleRetry = useCallback(() => {
+    if (networkState.isConnected && searchQuery) {
+      performSearch(searchQuery, sortOption);
+    } else if (networkState.isConnected) {
+      loadPopularVideos();
+    }
+  }, [networkState.isConnected, searchQuery, sortOption, performSearch, loadPopularVideos]);
+
+  // Initial load: fetch videos once when component mounts or initialQuery changes
+  useEffect(() => {
+    // Prevent double loading on initial mount
+    if (hasInitialLoadedRef.current && !initialQuery) {
+      return;
+    }
+
+    if (initialQuery) {
+      setSearchQuery(initialQuery);
+      performSearch(initialQuery, sortOption);
+    } else {
+      loadPopularVideos();
+    }
+
+    hasInitialLoadedRef.current = true;
+    // Only run on mount and when initialQuery changes - NOT when sortOption changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialQuery]);
+
+  // Re-search with current query when sort option changes (only if already loaded)
+  useEffect(() => {
+    // Only re-search if we already have videos loaded (not on initial mount)
+    if (hasInitialLoadedRef.current && searchQuery) {
+      performSearch(searchQuery, sortOption);
+    }
+    // Only run when sortOption changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortOption]);
+
+  useEffect(() => {
+    const displayed = allVideos.slice(0, displayCount);
+    setDisplayedVideos(displayed);
+  }, [allVideos, displayCount]);
 
   /**
    * Handles live search input changes with debounce.
@@ -218,7 +233,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
         loadPopularVideos();
       }
     }, DEBOUNCE_DELAY);
-  }, [sortOption]);
+  }, [sortOption, performSearch, loadPopularVideos]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
