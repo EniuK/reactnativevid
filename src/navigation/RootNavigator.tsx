@@ -31,7 +31,7 @@ const MainTabs: React.FC = () => {
         tabBarActiveTintColor: '#2B2D42',
         tabBarInactiveTintColor: '#999',
         tabBarStyle: {
-          backgroundColor: '#E0E0E0',
+          backgroundColor: '#8D99AE',
           borderTopWidth: 0,
           height: 60,
           paddingBottom: 8,
@@ -39,7 +39,8 @@ const MainTabs: React.FC = () => {
         },
         tabBarLabelStyle: {
           fontFamily: 'Poppins-Regular',
-          fontSize: 12,
+          fontSize: 16,
+          fontWeight: '400',
         },
       }}
     >
@@ -47,8 +48,8 @@ const MainTabs: React.FC = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <HomeIcon width={size} height={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <HomeIcon width={32} height={32} color={color} />
           ),
         }}
       />
@@ -56,8 +57,8 @@ const MainTabs: React.FC = () => {
         name="Search"
         component={SearchScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <SearchIcon width={size} height={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <SearchIcon width={32} height={32} color={color} />
           ),
         }}
       />
