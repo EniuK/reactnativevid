@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/RootNavigator';
-import { AppIcon } from '../components/icons/AppIcon';
+import { AppIcon } from '../components/SvgIcon';
 
 type WelcomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

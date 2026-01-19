@@ -35,18 +35,20 @@ import { VideoView, VideoViewRef, useVideoPlayer } from 'react-native-video';
 import { getVideoDetails } from '../api/youtubeApi';
 import { VideoDetail } from '../types/youtube';
 import { RootStackParamList } from '../navigation/RootNavigator';
-import { ViewsIcon } from '../components/icons/ViewsIcon';
-import { LikesIcon } from '../components/icons/LikesIcon';
-import { PlayIcon } from '../components/icons/PlayIcon';
-import { PauseIcon } from '../components/icons/PauseIcon';
-import { BackwardIcon } from '../components/icons/BackwardIcon';
-import { ForwardIcon } from '../components/icons/ForwardIcon';
-import { PersonIcon } from '../components/icons/PersonIcon';
-import { LeftArrowIcon } from '../components/icons/LeftArrowIcon';
-import { VolumeIcon } from '../components/icons/VolumeIcon';
-import { AirplayIcon } from '../components/icons/AirplayIcon';
-import { FullscreenIcon } from '../components/icons/FullscreenIcon';
-import { FullscreenExitIcon } from '../components/icons/FullscreenExitIcon';
+import {
+  ViewsIcon,
+  LikesIcon,
+  PlayIcon,
+  PauseIcon,
+  BackwardIcon,
+  ForwardIcon,
+  PersonIcon,
+  LeftArrowIcon,
+  VolumeIcon,
+  AirplayIcon,
+  FullscreenIcon,
+  FullscreenExitIcon,
+} from '../components/SvgIcon';
 
 type VideoDetailScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

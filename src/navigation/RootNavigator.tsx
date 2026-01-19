@@ -6,7 +6,7 @@ import { SearchScreen } from '../screens/SearchScreen';
 import { VideoDetailScreen } from '../screens/VideoDetailScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { WelcomeScreen } from '../screens/WelcomeScreen';
-import { HomeIcon, SearchIcon } from '../components/icons/SvgIcon';
+import { HomeIcon, SearchIcon } from '../components/SvgIcon';
 
 export type RootStackParamList = {
   Welcome: undefined;

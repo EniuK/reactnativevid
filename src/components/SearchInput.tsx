@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { SearchIcon } from './icons/SvgIcon';
+import { SearchIcon } from './SvgIcon';
 
 interface SearchInputProps {
   onSearch: (query: string) => void;

@@ -8,9 +8,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { PersonIcon } from '../components/icons/PersonIcon';
-import { NotificationIcon } from '../components/icons/NotificationIcon';
-import { ClockIcon } from '../components/icons/ClockIcon';
+import {
+  PersonIcon,
+  NotificationIcon,
+  ClockIcon,
+} from '../components/SvgIcon';
 import { RootStackParamList } from '../navigation/RootNavigator';
 
 type SettingsScreenNavigationProp = NativeStackNavigationProp<

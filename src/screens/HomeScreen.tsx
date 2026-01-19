@@ -28,7 +28,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { SearchInput } from '../components/SearchInput';
 import { CategoryRow } from '../components/CategoryRow';
 import { NoInternetView } from '../components/NoInternetView';
-import { SettingsIcon } from '../components/icons/SvgIcon';
+import { SettingsIcon } from '../components/SvgIcon';
 import { useNetworkState } from '../hooks/useNetworkState';
 import { searchVideos } from '../api/youtubeApi';
 import { YouTubeVideo } from '../types/youtube';
