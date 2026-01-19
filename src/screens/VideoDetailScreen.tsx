@@ -637,7 +637,8 @@ const styles = StyleSheet.create({
   },
   noteTimestamp: {
     fontSize: 12,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-SemiBold',
+    fontWeight: '600',
     color: '#666',
   },
   addNoteContainer: {
