@@ -658,10 +658,12 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   addNoteButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#2B2D42',
     borderRadius: 8,
     paddingVertical: 12,
+    paddingHorizontal: 24,
     alignItems: 'center',
+    alignSelf: 'flex-start',
   },
   addNoteButtonText: {
     fontSize: 16,
