@@ -5,11 +5,13 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  Image,
+  Linking,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/RootNavigator';
+import { LogoIcon } from '../components/icons/LogoIcon';
+import { AppIcon } from '../components/icons/AppIcon';
 
 type WelcomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -28,29 +30,22 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
   };
 
   const handleTermsPress = () => {
-    // Placeholder link - can be opened in browser or handled differently
-    console.log('Terms and Conditions pressed');
+    Linking.openURL('https://example.com/terms');
   };
 
   const handlePrivacyPress = () => {
-    // Placeholder link - can be opened in browser or handled differently
-    console.log('Privacy Policy pressed');
+    Linking.openURL('https://example.com/privacy');
   };
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
       <View style={styles.container}>
         <View style={styles.logoContainer}>
-          <Text style={styles.youtubeText}>YouTube</Text>
-          <Text style={styles.learnText}>LEARN</Text>
+          <LogoIcon width={width * 0.8} height={(width * 0.8 * 116) / 292} />
         </View>
 
         <View style={styles.iconContainer}>
-          <Image
-            source={require('../../assets/logo.png')}
-            style={styles.icon}
-            resizeMode="contain"
-          />
+          <AppIcon width={120} height={120} color="#343A40" />
         </View>
 
         <Text style={styles.welcomeText}>
