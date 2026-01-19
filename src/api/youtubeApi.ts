@@ -7,7 +7,7 @@
  * @module youtubeApi
  */
 
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import Constants from 'expo-constants';
 import NetInfo from '@react-native-community/netinfo';
 import { YouTubeApiResponse, YouTubeVideo, VideoDetail } from '../types/youtube';
@@ -117,15 +117,23 @@ export const searchVideos = async (
       }
     );
     return response.data.items || [];
-  } catch (error: any) {
+  } catch (error) {
+    const axiosError = error as AxiosError<{
+      error?: { message?: string };
+    }>;
     // Handle network errors (no internet, timeout, etc.)
-    if (error.code === 'NETWORK_ERROR' || error.message === 'Network Error' || !error.response) {
+    if (
+      axiosError.code === 'NETWORK_ERROR' ||
+      axiosError.message === 'Network Error' ||
+      !axiosError.response
+    ) {
       console.warn('Network error: No internet connection or request timeout');
       return [];
     }
 
-    if (error.response?.status === 403) {
-      const errorMessage = error.response?.data?.error?.message || 'Unknown error';
+    if (axiosError.response?.status === 403) {
+      const errorMessage =
+        axiosError.response.data?.error?.message || 'Unknown error';
       console.warn('YouTube API 403 Forbidden Error:', {
         message: 'API key may be invalid, missing permissions, or YouTube Data API v3 not enabled',
         errorMessage,
@@ -133,19 +141,22 @@ export const searchVideos = async (
       });
       return [];
     }
-    if (error.response?.status === 400) {
-      console.warn('YouTube API 400 Bad Request:', error.response?.data?.error?.message);
+    if (axiosError.response?.status === 400) {
+      console.warn(
+        'YouTube API 400 Bad Request:',
+        axiosError.response.data?.error?.message
+      );
       return [];
     }
-    if (error.response?.status === 429) {
+    if (axiosError.response?.status === 429) {
       console.warn('YouTube API 429 Too Many Requests: Rate limit exceeded');
       return [];
     }
-    if (error.response?.status >= 500) {
-      console.warn('YouTube API Server Error:', error.response?.status);
+    if (axiosError.response?.status && axiosError.response.status >= 500) {
+      console.warn('YouTube API Server Error:', axiosError.response.status);
       return [];
     }
-    console.error('Error fetching videos:', error);
+    console.error('Error fetching videos:', axiosError);
     return [];
   }
 };
@@ -187,15 +198,23 @@ export const getPopularVideos = async (
       }
     );
     return response.data.items || [];
-  } catch (error: any) {
+  } catch (error) {
+    const axiosError = error as AxiosError<{
+      error?: { message?: string };
+    }>;
     // Handle network errors (no internet, timeout, etc.)
-    if (error.code === 'NETWORK_ERROR' || error.message === 'Network Error' || !error.response) {
+    if (
+      axiosError.code === 'NETWORK_ERROR' ||
+      axiosError.message === 'Network Error' ||
+      !axiosError.response
+    ) {
       console.warn('Network error: No internet connection or request timeout');
       return [];
     }
 
-    if (error.response?.status === 403) {
-      const errorMessage = error.response?.data?.error?.message || 'Unknown error';
+    if (axiosError.response?.status === 403) {
+      const errorMessage =
+        axiosError.response.data?.error?.message || 'Unknown error';
       console.warn('YouTube API 403 Forbidden Error:', {
         message: 'API key may be invalid, missing permissions, or YouTube Data API v3 not enabled',
         errorMessage,
@@ -203,19 +222,22 @@ export const getPopularVideos = async (
       });
       return [];
     }
-    if (error.response?.status === 400) {
-      console.warn('YouTube API 400 Bad Request:', error.response?.data?.error?.message);
+    if (axiosError.response?.status === 400) {
+      console.warn(
+        'YouTube API 400 Bad Request:',
+        axiosError.response.data?.error?.message
+      );
       return [];
     }
-    if (error.response?.status === 429) {
+    if (axiosError.response?.status === 429) {
       console.warn('YouTube API 429 Too Many Requests: Rate limit exceeded');
       return [];
     }
-    if (error.response?.status >= 500) {
-      console.warn('YouTube API Server Error:', error.response?.status);
+    if (axiosError.response?.status && axiosError.response.status >= 500) {
+      console.warn('YouTube API Server Error:', axiosError.response.status);
       return [];
     }
-    console.error('Error fetching popular videos:', error);
+    console.error('Error fetching popular videos:', axiosError);
     return [];
   }
 };
@@ -273,26 +295,31 @@ export const getVideoDetails = async (videoId: string): Promise<VideoDetail> => 
       viewCount: video.statistics?.viewCount,
       likeCount: video.statistics?.likeCount,
     };
-  } catch (error: any) {
+  } catch (error) {
+    const axiosError = error as AxiosError;
     // Handle network errors (no internet, timeout, etc.)
-    if (error.code === 'NETWORK_ERROR' || error.message === 'Network Error' || !error.response) {
-      if (error.message && error.message.includes('No internet connection')) {
+    if (
+      axiosError.code === 'NETWORK_ERROR' ||
+      axiosError.message === 'Network Error' ||
+      !axiosError.response
+    ) {
+      if (axiosError.message && axiosError.message.includes('No internet connection')) {
         throw error; // Re-throw our custom message
       }
       throw new Error('No internet connection. Cannot load video details.');
     }
 
-    if (error.response?.status === 403) {
+    if (axiosError.response?.status === 403) {
       console.warn('YouTube API 403 Forbidden Error when fetching video details');
       throw new Error('Unable to load video details. Please check your API configuration.');
     }
-    if (error.response?.status === 404) {
+    if (axiosError.response?.status === 404) {
       throw new Error('Video not found');
     }
-    if (error.response?.status >= 500) {
+    if (axiosError.response?.status && axiosError.response.status >= 500) {
       throw new Error('Server error. Please try again later.');
     }
-    console.error('Error fetching video details:', error);
+    console.error('Error fetching video details:', axiosError);
     throw new Error('Failed to load video details. Please try again.');
   }
 };
