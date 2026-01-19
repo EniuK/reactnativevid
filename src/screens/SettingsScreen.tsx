@@ -43,7 +43,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
         <View style={styles.profileSection}>
           <View style={styles.profileIconContainer}>
-            <PersonIcon width={32} height={32} color="#2B2D42" />
+            <PersonIcon width={32} height={32} color="#FFFFFF" />
           </View>
           <Text style={styles.profileName}>John Doe</Text>
         </View>
