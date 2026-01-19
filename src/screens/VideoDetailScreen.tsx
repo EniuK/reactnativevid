@@ -568,8 +568,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#2B2D42',
     borderRadius: 4,
-    paddingVertical: 6,
-    paddingHorizontal: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 4,
     gap: 4,
   },
   statBoxText: {
