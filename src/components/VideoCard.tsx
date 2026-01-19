@@ -68,6 +68,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: '100%',
     height: CARD_WIDTH * 0.56,
+    backgroundColor: '#f0f0f0',
+    overflow: 'hidden',
   },
   thumbnail: {
     width: '100%',
