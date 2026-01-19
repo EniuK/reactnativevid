@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
-    color: '#1a1a1a',
+    color: '#2B2D42',
   },
   showMoreButton: {
     paddingVertical: 4,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   showMoreText: {
     fontSize: 14,
     fontFamily: 'Poppins-SemiBold',
-    color: '#007AFF',
+    color: '#2B2D42',
   },
   listContent: {
     paddingHorizontal: 16,

@@ -3,6 +3,7 @@ import {
   View,
   TextInput,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import { SearchIcon } from './icons/SvgIcon';
 
@@ -60,9 +61,13 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 
   return (
     <View style={[styles.container, compact && styles.containerCompact]}>
-      <View style={styles.inputContainer}>
+      <TouchableOpacity
+        style={styles.inputContainer}
+        onPress={() => onSearch('')}
+        activeOpacity={0.7}
+      >
         <View style={styles.icon}>
-          <SearchIcon width={20} height={20} color="#666" />
+          <SearchIcon width={20} height={20} color="#999" />
         </View>
         <TextInput
           style={styles.input}
@@ -72,8 +77,10 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           onChangeText={handleChange}
           onSubmitEditing={handleSubmit}
           returnKeyType="search"
+          editable={false}
+          pointerEvents="none"
         />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -92,12 +99,11 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    paddingHorizontal: 12,
-    height: 44,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 24,
+    borderWidth: 0,
+    paddingHorizontal: 16,
+    height: 48,
   },
   icon: {
     marginRight: 8,
