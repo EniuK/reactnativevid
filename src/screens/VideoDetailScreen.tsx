@@ -632,7 +632,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     color: '#2B2D42',
     lineHeight: 20,
-    paddingRight: 50,
+    paddingRight: 60,
+    paddingBottom: 4,
   },
   noteTimestamp: {
     position: 'absolute',
