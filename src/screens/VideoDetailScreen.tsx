@@ -537,16 +537,16 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   activeTab: {
-    borderBottomColor: '#007AFF',
+    borderBottomColor: '#2B2D42',
   },
   tabText: {
     fontSize: 16,
     fontFamily: 'Poppins-Regular',
-    color: '#666',
+    color: '#C8C8C8',
   },
   activeTabText: {
     fontFamily: 'Poppins-SemiBold',
-    color: '#007AFF',
+    color: '#2B2D42',
   },
   description: {
     fontSize: 14,
