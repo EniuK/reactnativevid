@@ -272,7 +272,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+      <SafeAreaView style={styles.safeArea} edges={['bottom']}>
         <View style={styles.centerContainer}>
           <ActivityIndicator size="large" color="#007AFF" />
         </View>
@@ -282,7 +282,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
 
   if (error || !videoDetail) {
     return (
-      <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+      <SafeAreaView style={styles.safeArea} edges={['bottom']}>
         <View style={styles.centerContainer}>
           <Text style={styles.errorText}>{error || 'Video not found'}</Text>
         </View>
