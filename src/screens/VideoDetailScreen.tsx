@@ -394,9 +394,12 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
                 <View style={styles.notesList}>
                   {notes.map((note, index) => (
                     <View key={index} style={styles.noteItem}>
-                      <Text style={styles.noteText}>{note.text}</Text>
-                      <Text style={styles.noteTimestamp}>
-                        {formatTime(note.timestamp)}
+                      <Text style={styles.noteText}>
+                        {note.text}
+                        {'\n'}
+                        <Text style={styles.noteTimestamp}>
+                          {formatTime(note.timestamp)}
+                        </Text>
                       </Text>
                     </View>
                   ))}
@@ -625,19 +628,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
-    position: 'relative',
   },
   noteText: {
     fontSize: 14,
     fontFamily: 'Poppins-Regular',
     color: '#2B2D42',
     lineHeight: 20,
-    paddingRight: 50,
   },
   noteTimestamp: {
-    position: 'absolute',
-    bottom: 12,
-    right: 12,
     fontSize: 12,
     fontFamily: 'Poppins-Regular',
     color: '#666',
