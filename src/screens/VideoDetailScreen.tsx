@@ -513,7 +513,8 @@ const styles = StyleSheet.create({
   },
   channel: {
     fontSize: 16,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'Poppins-Bold',
+    fontWeight: '700',
     color: '#666',
   },
   divider: {
