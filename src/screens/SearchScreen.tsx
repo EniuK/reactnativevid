@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
   sortButton: {
     paddingVertical: 4,
     paddingHorizontal: 0,
-    alignSelf: 'flex-start',
+    alignSelf: 'flex-end',
   },
   sortButtonText: {
     fontSize: 14,
