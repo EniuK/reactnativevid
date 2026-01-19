@@ -361,8 +361,9 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
                 keepScreenAwake={true}
               />
               {/* White overlay when video is paused in non-fullscreen mode */}
+              {/* pointerEvents="none" allows clicks to pass through to controls */}
               {!isFullscreen && !isPlaying && (
-                <View style={styles.videoPauseOverlay} />
+                <View style={styles.videoPauseOverlay} pointerEvents="none" />
               )}
               {/* Custom controls - hidden in fullscreen, native controls shown instead */}
               {!isFullscreen && (
