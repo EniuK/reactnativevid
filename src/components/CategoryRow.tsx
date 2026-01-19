@@ -88,7 +88,8 @@ const styles = StyleSheet.create({
   },
   showMoreText: {
     fontSize: 14,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'Poppins-Regular',
+    fontWeight: '400',
     color: '#2B2D42',
   },
   listContent: {
