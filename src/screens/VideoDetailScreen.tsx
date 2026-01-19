@@ -395,7 +395,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
         <View style={styles.bottomStatisticsContainer}>
           {videoDetail.viewCount && (
             <View style={styles.statBox}>
-              <ViewsIcon width={10} height={10} color="#FFFFFF" />
+              <ViewsIcon width={20} height={20} color="#FFFFFF" />
               <Text style={styles.statBoxText}>
                 {formatNumber(videoDetail.viewCount)} views
               </Text>
@@ -403,7 +403,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
           )}
           {videoDetail.likeCount && (
             <View style={styles.statBox}>
-              <LikesIcon width={10} height={10} color="#FFFFFF" />
+              <LikesIcon width={20} height={20} color="#FFFFFF" />
               <Text style={styles.statBoxText}>
                 {formatNumber(videoDetail.likeCount)} likes
               </Text>
@@ -557,7 +557,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
     paddingBottom: 8,
     paddingTop: 6,
     gap: 24,
