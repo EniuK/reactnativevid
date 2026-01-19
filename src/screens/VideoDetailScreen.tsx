@@ -346,7 +346,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
               <VideoView
                 ref={videoRef}
                 player={player}
-                style={[styles.video, !isPlaying && !isFullscreen && styles.videoPaused]}
+                style={[styles.video, (!isPlaying && !isFullscreen) ? styles.videoPaused : undefined]}
                 controls={isFullscreen}
                 resizeMode="contain"
                 keepScreenAwake={true}
