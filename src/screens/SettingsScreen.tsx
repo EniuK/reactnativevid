@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
   },
   backIcon: {
     fontSize: 24,
+    fontFamily: 'Poppins-Regular',
     color: '#2B2D42',
     fontWeight: '400',
   },
