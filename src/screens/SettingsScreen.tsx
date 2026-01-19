@@ -42,7 +42,9 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
         </View>
 
         <View style={styles.profileSection}>
-          <PersonIcon width={48} height={48} color="#2B2D42" />
+          <View style={styles.profileIconContainer}>
+            <PersonIcon width={32} height={32} color="#2B2D42" />
+          </View>
           <Text style={styles.profileName}>John Doe</Text>
         </View>
 
@@ -115,6 +117,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 16,
     paddingVertical: 16,
+  },
+  profileIconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#E0E0E0',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   profileName: {
     fontSize: 18,
