@@ -775,7 +775,7 @@ const styles = StyleSheet.create({
   addNoteContainer: {
     marginTop: 8,
     alignItems: 'center',
-    width: width * 0.98,
+    width: 380,
     alignSelf: 'center',
   },
   noteInput: {
@@ -789,6 +789,7 @@ const styles = StyleSheet.create({
     padding: 12,
     backgroundColor: '#f9f9f9',
     marginBottom: 16,
+    width: '100%',
   },
   addNoteButton: {
     backgroundColor: '#2B2D42',
