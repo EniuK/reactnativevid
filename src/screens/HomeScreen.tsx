@@ -162,7 +162,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             onPress={handleSettingsPress}
             style={styles.settingsButton}
           >
-            <SettingsIcon width={28} height={28} color="#2B2D42" />
+            <SettingsIcon width={32} height={32} color="#2B2D42" />
           </TouchableOpacity>
         </View>
         <ScrollView
