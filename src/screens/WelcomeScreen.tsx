@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   guestButton: {
-    backgroundColor: '#343A40',
+    backgroundColor: '#2B2D42',
     borderRadius: 12,
     paddingVertical: 16,
     paddingHorizontal: 48,
