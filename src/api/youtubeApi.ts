@@ -16,15 +16,23 @@ const YOUTUBE_API_BASE_URL = 'https://www.googleapis.com/youtube/v3';
 
 /**
  * Checks if device has internet connection
+ * Uses isConnected as primary check, isInternetReachable as secondary (may be null)
  * @returns {Promise<boolean>} True if connected to internet, false otherwise
  */
 const checkInternetConnection = async (): Promise<boolean> => {
   try {
     const state = await NetInfo.fetch();
-    return state.isConnected === true && state.isInternetReachable === true;
+    // Primary check: isConnected must be true
+    // Secondary check: isInternetReachable (if available, must not be false)
+    // Note: isInternetReachable can be null on some platforms/devices, so we only check if it's explicitly false
+    const isConnected = state.isConnected === true;
+    const isInternetReachable = state.isInternetReachable !== false; // true or null is OK, only false is bad
+    
+    return isConnected && isInternetReachable;
   } catch (error) {
     console.warn('Error checking network connection:', error);
-    return false;
+    // If NetInfo fails, assume connection exists and let API call handle the error
+    return true;
   }
 };
 
