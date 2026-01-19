@@ -67,7 +67,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         activeOpacity={0.7}
       >
         <View style={styles.icon}>
-          <SearchIcon width={20} height={20} color="#999" />
+          <SearchIcon width={20} height={20} color="#fff" />
         </View>
         <TextInput
           style={styles.input}
