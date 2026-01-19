@@ -625,12 +625,22 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
+    position: 'relative',
   },
   noteText: {
     fontSize: 14,
     fontFamily: 'Poppins-Regular',
     color: '#2B2D42',
     lineHeight: 20,
+    paddingRight: 50,
+  },
+  noteTimestamp: {
+    position: 'absolute',
+    bottom: 12,
+    right: 12,
+    fontSize: 12,
+    fontFamily: 'Poppins-Regular',
+    color: '#666',
   },
   addNoteContainer: {
     marginTop: 8,
