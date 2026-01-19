@@ -36,6 +36,10 @@ const MainTabs: React.FC = () => {
           height: 60,
           paddingBottom: 8,
           paddingTop: 8,
+          justifyContent: 'space-evenly',
+        },
+        tabBarItemStyle: {
+          justifyContent: 'center',
         },
         tabBarLabelStyle: {
           fontFamily: 'Poppins-Regular',
