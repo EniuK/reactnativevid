@@ -295,14 +295,15 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
           {(displayedVideos.length > 0 || loading) && (
             <View style={styles.resultsHeader}>
               <Text style={styles.resultsText}>
-                {allVideos.length} results found{searchQuery ? ` for: "${searchQuery}"` : ''}
+                {allVideos.length} results <Text style={styles.boldText}>found for:</Text>
+                {searchQuery ? <Text style={styles.boldText}> "{searchQuery}"</Text> : ''}
               </Text>
               <TouchableOpacity
                 onPress={() => setShowSortModal(true)}
                 style={styles.sortButton}
               >
                 <Text style={styles.sortButtonText}>
-                  Sort by: {getSortLabel(sortOption)}
+                  Sort by: <Text style={styles.boldText}>{getSortLabel(sortOption)}</Text>
                 </Text>
               </TouchableOpacity>
             </View>
@@ -380,6 +381,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     fontWeight: '400',
     color: '#2B2D42',
+  },
+  boldText: {
+    fontFamily: 'Poppins-Bold',
+    fontWeight: '700',
   },
   listContent: {
     padding: 16,
