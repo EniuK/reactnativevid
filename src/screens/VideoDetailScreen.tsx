@@ -346,12 +346,13 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
               <VideoView
                 ref={videoRef}
                 player={player}
-                style={[styles.video, (!isPlaying && !isFullscreen) ? styles.videoPaused : undefined]}
+                style={[
+                  styles.video,
+                  (!isPlaying && !isFullscreen) && styles.videoPaused,
+                ].filter(Boolean) as any}
                 controls={isFullscreen}
                 resizeMode="contain"
                 keepScreenAwake={true}
-                onFullscreenPlayerWillPresent={() => setIsFullscreen(true)}
-                onFullscreenPlayerWillDismiss={() => setIsFullscreen(false)}
               />
               {/* Custom controls - hidden in fullscreen, native controls shown instead */}
               {!isFullscreen && (
