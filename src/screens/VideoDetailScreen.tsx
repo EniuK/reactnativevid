@@ -359,6 +359,9 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
                 controls={isFullscreen}
                 resizeMode="contain"
                 keepScreenAwake={true}
+                // In non-fullscreen mode we use custom controls, so allow touches
+                // to pass through the native video view to React Native overlay controls.
+                pointerEvents={isFullscreen ? 'auto' : 'none'}
               />
               {/* White overlay when video is paused in non-fullscreen mode */}
               {/* pointerEvents="none" allows clicks to pass through to controls */}
@@ -629,6 +632,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'transparent',
     gap: 24,
+    zIndex: 15,
   },
   controlButton: {
     width: 48,
