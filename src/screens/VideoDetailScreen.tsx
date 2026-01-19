@@ -307,26 +307,6 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
           {activeTab === 'Details' ? (
             <>
               <Text style={styles.description}>{videoDetail.description}</Text>
-              {(videoDetail.viewCount || videoDetail.likeCount) && (
-                <View style={styles.statisticsContainer}>
-                  {videoDetail.viewCount && (
-                    <View style={styles.statItem}>
-                      <ViewsIcon width={20} height={20} color="#2B2D42" />
-                      <Text style={styles.statText}>
-                        {formatNumber(videoDetail.viewCount)} views
-                      </Text>
-                    </View>
-                  )}
-                  {videoDetail.likeCount && (
-                    <View style={styles.statItem}>
-                      <LikesIcon width={20} height={20} color="#2B2D42" />
-                      <Text style={styles.statText}>
-                        {formatNumber(videoDetail.likeCount)} likes
-                      </Text>
-                    </View>
-                  )}
-                </View>
-              )}
             </>
           ) : (
             <View style={styles.notesContainer}>
@@ -362,6 +342,27 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
           )}
         </View>
       </ScrollView>
+      {/* Statistics at bottom */}
+      {(videoDetail.viewCount || videoDetail.likeCount) && (
+        <View style={styles.bottomStatisticsContainer}>
+          {videoDetail.viewCount && (
+            <View style={styles.statBox}>
+              <ViewsIcon width={20} height={20} color="#FFFFFF" />
+              <Text style={styles.statBoxText}>
+                {formatNumber(videoDetail.viewCount)} views
+              </Text>
+            </View>
+          )}
+          {videoDetail.likeCount && (
+            <View style={styles.statBox}>
+              <LikesIcon width={20} height={20} color="#FFFFFF" />
+              <Text style={styles.statBoxText}>
+                {formatNumber(videoDetail.likeCount)} likes
+              </Text>
+            </View>
+          )}
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -494,20 +495,29 @@ const styles = StyleSheet.create({
     color: '#2B2D42',
     lineHeight: 22,
   },
-  statisticsContainer: {
+  bottomStatisticsContainer: {
     flexDirection: 'row',
-    gap: 24,
-    marginTop: 16,
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    paddingTop: 12,
+    gap: 12,
   },
-  statItem: {
+  statBox: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#2B2D42',
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     gap: 8,
   },
-  statText: {
+  statBoxText: {
     fontSize: 14,
     fontFamily: 'Poppins-Regular',
-    color: '#2B2D42',
+    color: '#FFFFFF',
   },
   notesContainer: {
     marginTop: 8,
