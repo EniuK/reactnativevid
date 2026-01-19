@@ -29,26 +29,19 @@ const checkInternetConnection = async (): Promise<boolean> => {
 };
 
 /**
- * Cached API key to avoid multiple reads from Constants
- * Initialized once and reused for all API calls
- */
-let cachedApiKey: string | null = null;
-
-/**
  * Retrieves the YouTube API key from Expo configuration.
- * The API key is cached after first access to avoid repeated reads.
+ * Reads directly from Constants.expoConfig.extra.youtubeApiKey each time.
  * The API key should be set in the .env file as YOUTUBE_API_KEY.
+ * 
+ * Note: Cache was removed to allow API key updates in .env without app restart.
+ * Reading from Constants is not expensive and allows hot reloading of config changes.
  * 
  * @returns {string} The YouTube API key
  * @throws {Error} If the API key is not configured
  */
 const getApiKey = (): string => {
-  // Return cached key if already retrieved
-  if (cachedApiKey !== null) {
-    return cachedApiKey;
-  }
-
-  // Get API key from Expo configuration (only once)
+  // Read API key directly from Expo configuration each time
+  // This allows updating the key in .env without clearing cache
   const apiKey = Constants.expoConfig?.extra?.youtubeApiKey;
   if (!apiKey) {
     throw new Error(
@@ -56,8 +49,6 @@ const getApiKey = (): string => {
     );
   }
 
-  // Cache the API key for future use
-  cachedApiKey = apiKey;
   return apiKey;
 };
 
