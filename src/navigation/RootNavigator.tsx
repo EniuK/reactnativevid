@@ -33,9 +33,9 @@ const MainTabs: React.FC = () => {
         tabBarStyle: {
           backgroundColor: '#8D99AE',
           borderTopWidth: 0,
-          height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
+          height: 80,
+          paddingBottom: 20,
+          paddingTop: 12,
           justifyContent: 'space-evenly',
         },
         tabBarItemStyle: {
