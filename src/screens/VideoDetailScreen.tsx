@@ -438,11 +438,24 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     lineHeight: 28,
   },
+  channelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  channelIconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#2B2D42',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
   channel: {
     fontSize: 16,
     fontFamily: 'Poppins-SemiBold',
     color: '#666',
-    marginBottom: 16,
   },
   divider: {
     height: 1,
