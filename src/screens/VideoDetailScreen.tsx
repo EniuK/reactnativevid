@@ -350,9 +350,6 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
                 controls={true}
                 resizeMode="contain"
                 keepScreenAwake={true}
-                allowsFullscreen={true}
-                showsTimecodes={true}
-                requiresLinearPlayback={false}
               />
               {/* Custom controls - hidden in fullscreen, native controls shown instead */}
               {!isFullscreen && (
