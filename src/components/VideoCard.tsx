@@ -38,7 +38,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, onPress }) => {
         <Image
           source={{ uri: video.snippet.thumbnails.medium.url }}
           style={styles.thumbnail}
-          resizeMode="contain"
+          resizeMode="cover"
         />
       </View>
       <View style={styles.info}>
@@ -65,16 +65,17 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   thumbnailContainer: {
-    position: 'relative',
     width: '100%',
     height: CARD_WIDTH * 0.56,
     backgroundColor: '#f0f0f0',
     overflow: 'hidden',
+    zIndex: 1,
   },
   thumbnail: {
     width: '100%',
     height: '100%',
     backgroundColor: '#f0f0f0',
+    zIndex: 2,
   },
   info: {
     padding: 12,
