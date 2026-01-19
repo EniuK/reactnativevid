@@ -58,10 +58,12 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
           <View style={styles.reminderRow}>
             <View style={styles.reminderInfo}>
-              <Text style={styles.reminderLabel}>Repeat everyday at:</Text>
-              <View style={styles.timeContainer}>
-                <ClockIcon width={20} height={20} color="#2B2D42" />
-                <Text style={styles.timeText}>{reminderTime}</Text>
+              <View style={styles.reminderLabelRow}>
+                <Text style={styles.reminderLabel}>Repeat everyday at:</Text>
+                <View style={styles.timeContainer}>
+                  <ClockIcon width={20} height={20} color="#2B2D42" />
+                  <Text style={styles.timeText}>{reminderTime}</Text>
+                </View>
               </View>
             </View>
             <Switch
@@ -161,11 +163,16 @@ const styles = StyleSheet.create({
   reminderInfo: {
     flex: 1,
   },
+  reminderLabelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
   reminderLabel: {
     fontSize: 16,
     fontFamily: 'Poppins-Regular',
     color: '#2B2D42',
-    marginBottom: 8,
+    marginRight: 8,
   },
   timeContainer: {
     flexDirection: 'row',
