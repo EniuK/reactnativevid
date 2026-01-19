@@ -645,6 +645,7 @@ const styles = StyleSheet.create({
   },
   addNoteContainer: {
     marginTop: 8,
+    alignItems: 'center',
   },
   noteInput: {
     minHeight: 100,
@@ -662,9 +663,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#2B2D42',
     borderRadius: 8,
     paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 32,
     alignItems: 'center',
-    alignSelf: 'flex-start',
   },
   addNoteButtonText: {
     fontSize: 16,
