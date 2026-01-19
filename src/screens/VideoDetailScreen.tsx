@@ -347,7 +347,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
         <View style={styles.bottomStatisticsContainer}>
           {videoDetail.viewCount && (
             <View style={styles.statBox}>
-              <ViewsIcon width={20} height={20} color="#FFFFFF" />
+              <ViewsIcon width={10} height={10} color="#FFFFFF" />
               <Text style={styles.statBoxText}>
                 {formatNumber(videoDetail.viewCount)} views
               </Text>
@@ -355,7 +355,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
           )}
           {videoDetail.likeCount && (
             <View style={styles.statBox}>
-              <LikesIcon width={20} height={20} color="#FFFFFF" />
+              <LikesIcon width={10} height={10} color="#FFFFFF" />
               <Text style={styles.statBoxText}>
                 {formatNumber(videoDetail.likeCount)} likes
               </Text>
@@ -499,9 +499,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingBottom: 16,
-    paddingTop: 12,
-    gap: 12,
+    paddingBottom: 8,
+    paddingTop: 6,
+    gap: 6,
   },
   statBox: {
     flex: 1,
@@ -509,13 +509,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#2B2D42',
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    gap: 8,
+    borderRadius: 4,
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    gap: 4,
   },
   statBoxText: {
-    fontSize: 14,
+    fontSize: 10,
     fontFamily: 'Poppins-Regular',
     color: '#FFFFFF',
   },
