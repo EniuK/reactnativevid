@@ -761,7 +761,7 @@ const styles = StyleSheet.create({
     color: '#2B2D42',
     lineHeight: 20,
     paddingRight: 60,
-    paddingBottom: 4,
+    paddingBottom: 20,
   },
   noteTimestamp: {
     position: 'absolute',
