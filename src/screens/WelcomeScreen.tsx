@@ -117,12 +117,14 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     fontSize: 18,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-SemiBold',
+    fontWeight: '600',
     color: '#fff',
     textAlign: 'left',
     width: '100%',
     marginBottom: height * 0.04,
     lineHeight: 24,
+    letterSpacing: 0.18, // 1% of 18px = 0.18px
     paddingHorizontal: 24,
   },
   guestButton: {
