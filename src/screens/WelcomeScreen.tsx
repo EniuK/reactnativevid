@@ -54,7 +54,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
         </View>
 
         <Text style={styles.welcomeText}>
-          Welcome to the best YouTube-based learning application.
+          Welcome to the best{'\n'}YouTube-based learning{'\n'}application.
         </Text>
 
         <TouchableOpacity
@@ -95,19 +95,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   logoContainer: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    width: '100%',
+    paddingHorizontal: 24,
     marginBottom: height * 0.08,
   },
   youtubeText: {
     fontSize: 48,
     fontFamily: 'Poppins-Bold',
     color: '#fff',
+    lineHeight: 56,
   },
   learnText: {
     fontSize: 32,
     fontFamily: 'Poppins-Bold',
     color: '#343A40',
     marginTop: -8,
+    alignSelf: 'flex-end',
+    marginRight: 0,
   },
   iconContainer: {
     marginVertical: height * 0.06,
@@ -126,6 +131,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: height * 0.04,
     lineHeight: 24,
+    paddingHorizontal: 24,
   },
   guestButton: {
     backgroundColor: '#343A40',
