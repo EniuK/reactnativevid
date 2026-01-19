@@ -46,6 +46,7 @@ import { LeftArrowIcon } from '../components/icons/LeftArrowIcon';
 import { VolumeIcon } from '../components/icons/VolumeIcon';
 import { AirplayIcon } from '../components/icons/AirplayIcon';
 import { FullscreenIcon } from '../components/icons/FullscreenIcon';
+import { FullscreenExitIcon } from '../components/icons/FullscreenExitIcon';
 
 type VideoDetailScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -122,6 +123,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   const [newNote, setNewNote] = useState<string>('');
   const [noteSaving, setNoteSaving] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Initialize video player with HLS stream
   // Using react-native-video v7 API with useVideoPlayer hook
@@ -275,14 +277,28 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   };
 
   /**
-   * Handles fullscreen toggle
+   * Handles fullscreen enter
    */
   const handleFullscreen = () => {
     if (!videoRef.current) return;
     try {
       videoRef.current.enterFullscreen();
+      setIsFullscreen(true);
     } catch (err) {
       console.error('Error entering fullscreen:', err);
+    }
+  };
+
+  /**
+   * Handles fullscreen exit
+   */
+  const handleExitFullscreen = () => {
+    if (!videoRef.current) return;
+    try {
+      videoRef.current.exitFullscreen();
+      setIsFullscreen(false);
+    } catch (err) {
+      console.error('Error exiting fullscreen:', err);
     }
   };
 
@@ -331,7 +347,8 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
                 ref={videoRef}
                 player={player}
                 style={[styles.video, !isPlaying && styles.videoPaused]}
-                controls={false}
+                controls={isFullscreen}
+                nativeControls={isFullscreen}
                 resizeMode="contain"
                 keepScreenAwake={true}
               />
@@ -394,10 +411,14 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
               {/* Bottom right fullscreen button */}
               <TouchableOpacity
                 style={styles.fullscreenButton}
-                onPress={handleFullscreen}
+                onPress={isFullscreen ? handleExitFullscreen : handleFullscreen}
                 activeOpacity={0.7}
               >
-                <FullscreenIcon width={24} height={24} color="#fff" />
+                {isFullscreen ? (
+                  <FullscreenExitIcon width={24} height={24} color="#fff" />
+                ) : (
+                  <FullscreenIcon width={24} height={24} color="#fff" />
+                )}
               </TouchableOpacity>
             </>
           )}
