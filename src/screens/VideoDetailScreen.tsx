@@ -387,6 +387,27 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
           {activeTab === 'Details' ? (
             <>
               <Text style={styles.description}>{videoDetail.description}</Text>
+              {/* Statistics at bottom of Details tab */}
+              {(videoDetail.viewCount || videoDetail.likeCount) && (
+                <View style={styles.bottomStatisticsContainer}>
+                  {videoDetail.viewCount && (
+                    <View style={styles.statBox}>
+                      <ViewsIcon width={20} height={20} color="#FFFFFF" />
+                      <Text style={styles.statBoxText}>
+                        {formatNumber(videoDetail.viewCount)} views
+                      </Text>
+                    </View>
+                  )}
+                  {videoDetail.likeCount && (
+                    <View style={styles.statBox}>
+                      <LikesIcon width={20} height={20} color="#FFFFFF" />
+                      <Text style={styles.statBoxText}>
+                        {formatNumber(videoDetail.likeCount)} likes
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              )}
             </>
           ) : (
             <View style={styles.notesContainer}>
@@ -425,27 +446,6 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
           )}
         </View>
       </ScrollView>
-      {/* Statistics at bottom */}
-      {(videoDetail.viewCount || videoDetail.likeCount) && (
-        <View style={styles.bottomStatisticsContainer}>
-          {videoDetail.viewCount && (
-            <View style={styles.statBox}>
-              <ViewsIcon width={20} height={20} color="#FFFFFF" />
-              <Text style={styles.statBoxText}>
-                {formatNumber(videoDetail.viewCount)} views
-              </Text>
-            </View>
-          )}
-          {videoDetail.likeCount && (
-            <View style={styles.statBox}>
-              <LikesIcon width={20} height={20} color="#FFFFFF" />
-              <Text style={styles.statBoxText}>
-                {formatNumber(videoDetail.likeCount)} likes
-              </Text>
-            </View>
-          )}
-        </View>
-      )}
     </SafeAreaView>
   );
 };
