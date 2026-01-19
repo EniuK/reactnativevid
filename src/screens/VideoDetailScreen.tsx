@@ -655,7 +655,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     backgroundColor: '#f9f9f9',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   addNoteButton: {
     backgroundColor: '#2B2D42',
