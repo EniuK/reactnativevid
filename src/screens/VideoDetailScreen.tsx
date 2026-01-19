@@ -274,6 +274,25 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
     }
   };
 
+  /**
+   * Handles fullscreen toggle
+   */
+  const handleFullscreen = () => {
+    if (!videoRef.current) return;
+    try {
+      videoRef.current.enterFullscreen();
+    } catch (err) {
+      console.error('Error entering fullscreen:', err);
+    }
+  };
+
+  /**
+   * Handles back navigation
+   */
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   if (loading) {
     return (
       <SafeAreaView style={styles.safeArea} edges={['bottom']}>
