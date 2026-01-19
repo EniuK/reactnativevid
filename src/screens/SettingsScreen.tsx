@@ -188,8 +188,8 @@ const styles = StyleSheet.create({
   },
   reminderDescription: {
     fontSize: 14,
-    fontFamily: 'Poppins-Regular',
-    fontWeight: '400',
+    fontFamily: 'Poppins-SemiBold',
+    fontWeight: '600',
     color: '#666',
     lineHeight: 20,
   },
