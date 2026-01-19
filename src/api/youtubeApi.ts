@@ -93,13 +93,21 @@ export const searchVideos = async (
       return [];
     }
 
+    // Validate query is provided
+    if (!query || !query.trim()) {
+      console.warn('Empty query provided to searchVideos');
+      return [];
+    }
+
     const apiKey = getApiKey();
+    const trimmedQuery = query.trim();
+    
     const response = await axios.get<YouTubeApiResponse>(
       `${YOUTUBE_API_BASE_URL}/search`,
       {
         params: {
           part: 'snippet',
-          q: query || 'programming tutorial',
+          q: trimmedQuery,
           type: 'video',
           maxResults,
           order,
