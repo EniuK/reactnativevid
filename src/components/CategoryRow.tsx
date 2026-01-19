@@ -32,6 +32,7 @@ export const CategoryRow: React.FC<CategoryRowProps> = ({
 
   return (
     <View style={styles.container}>
+      <View style={styles.divider} />
       <View style={styles.header}>
         <Text style={styles.title}>{title}</Text>
         <TouchableOpacity
@@ -62,6 +63,12 @@ export const CategoryRow: React.FC<CategoryRowProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginBottom: 24,
+  },
+  divider: {
+    height: 2,
+    backgroundColor: '#2B2D42',
+    marginHorizontal: 16,
+    marginBottom: 16,
   },
   header: {
     flexDirection: 'row',
