@@ -42,6 +42,10 @@ import { PauseIcon } from '../components/icons/PauseIcon';
 import { BackwardIcon } from '../components/icons/BackwardIcon';
 import { ForwardIcon } from '../components/icons/ForwardIcon';
 import { PersonIcon } from '../components/icons/PersonIcon';
+import { LeftArrowIcon } from '../components/icons/LeftArrowIcon';
+import { VolumeIcon } from '../components/icons/VolumeIcon';
+import { AirplayIcon } from '../components/icons/AirplayIcon';
+import { FullscreenIcon } from '../components/icons/FullscreenIcon';
 
 type VideoDetailScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -307,11 +311,40 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
               <VideoView
                 ref={videoRef}
                 player={player}
-                style={styles.video}
+                style={[styles.video, !isPlaying && styles.videoPaused]}
                 controls={false}
                 resizeMode="contain"
                 keepScreenAwake={true}
               />
+              {/* Top controls - shown when paused */}
+              {!isPlaying && (
+                <View style={styles.topControls}>
+                  <TouchableOpacity
+                    style={styles.topControlButton}
+                    onPress={handleBack}
+                    activeOpacity={0.7}
+                  >
+                    <LeftArrowIcon width={24} height={24} color="#fff" />
+                  </TouchableOpacity>
+                  <View style={styles.topRightControls}>
+                    <TouchableOpacity
+                      style={styles.topControlButton}
+                      onPress={() => {}}
+                      activeOpacity={0.7}
+                    >
+                      <VolumeIcon width={24} height={24} color="#fff" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.topControlButton}
+                      onPress={() => {}}
+                      activeOpacity={0.7}
+                    >
+                      <AirplayIcon width={24} height={24} color="#fff" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
+              {/* Center playback controls */}
               <View style={styles.customControls}>
                 <TouchableOpacity
                   style={styles.controlButton}
@@ -339,6 +372,14 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
                   <ForwardIcon width={32} height={32} color="#fff" />
                 </TouchableOpacity>
               </View>
+              {/* Bottom right fullscreen button */}
+              <TouchableOpacity
+                style={styles.fullscreenButton}
+                onPress={handleFullscreen}
+                activeOpacity={0.7}
+              >
+                <FullscreenIcon width={24} height={24} color="#fff" />
+              </TouchableOpacity>
             </>
           )}
         </View>
@@ -508,6 +549,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  fullscreenButton: {
+    position: 'absolute',
+    bottom: 12,
+    right: 12,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
   },
   videoErrorContainer: {
     width: '100%',
