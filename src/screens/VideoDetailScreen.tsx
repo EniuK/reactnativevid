@@ -60,11 +60,27 @@ const VIDEO_HEIGHT = width * 0.5625; // 16:9 aspect ratio
 
 type TabType = 'Details' | 'Notes';
 
+interface Note {
+  text: string;
+  timestamp: number; // Time in seconds
+}
+
 /**
  * Storage key prefix for video notes
  * Format: `video_notes_${videoId}`
  */
 const getNotesStorageKey = (videoId: string): string => `video_notes_${videoId}`;
+
+/**
+ * Formats time in seconds to MM:SS format
+ * @param {number} seconds - Time in seconds
+ * @returns {string} Formatted time string (e.g., "2:08")
+ */
+const formatTime = (seconds: number): string => {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${String(secs).padStart(2, '0')}`;
+};
 
 /**
  * Formats a number with commas for display (e.g., 25266952 -> "25,266,952")
@@ -98,7 +114,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [videoError, setVideoError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>('Details');
-  const [notes, setNotes] = useState<string[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
   const [newNote, setNewNote] = useState<string>('');
   const [noteSaving, setNoteSaving] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -119,8 +135,16 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
       const savedNotesJson = await AsyncStorage.getItem(storageKey);
       if (savedNotesJson) {
         const savedNotes = JSON.parse(savedNotesJson);
+        // Handle both old format (string[]) and new format (Note[])
         if (Array.isArray(savedNotes)) {
-          setNotes(savedNotes);
+          const formattedNotes = savedNotes.map((note) => {
+            if (typeof note === 'string') {
+              // Old format - convert to new format with timestamp 0
+              return { text: note, timestamp: 0 };
+            }
+            return note;
+          });
+          setNotes(formattedNotes);
         }
       }
     } catch (err) {
@@ -131,9 +155,9 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   /**
    * Saves notes array for the current video to AsyncStorage
    * @param {string} videoId - The video ID to save notes for
-   * @param {string[]} notesArray - The notes array to save
+   * @param {Note[]} notesArray - The notes array to save
    */
-  const saveNotes = async (videoId: string, notesArray: string[]) => {
+  const saveNotes = async (videoId: string, notesArray: Note[]) => {
     try {
       setNoteSaving(true);
       const storageKey = getNotesStorageKey(videoId);
@@ -146,12 +170,20 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   };
 
   /**
-   * Adds a new note to the notes array
+   * Adds a new note to the notes array with current video timestamp
    */
   const handleAddNote = () => {
-    if (!newNote.trim() || !videoId) return;
+    if (!newNote.trim() || !videoId || !player) return;
     
-    const updatedNotes = [...notes, newNote.trim()];
+    // Get current playback time
+    const currentTime = player.currentTime || 0;
+    
+    const newNoteObj: Note = {
+      text: newNote.trim(),
+      timestamp: currentTime,
+    };
+    
+    const updatedNotes = [...notes, newNoteObj];
     setNotes(updatedNotes);
     setNewNote('');
     saveNotes(videoId, updatedNotes);
@@ -362,7 +394,10 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
                 <View style={styles.notesList}>
                   {notes.map((note, index) => (
                     <View key={index} style={styles.noteItem}>
-                      <Text style={styles.noteText}>{note}</Text>
+                      <Text style={styles.noteText}>{note.text}</Text>
+                      <Text style={styles.noteTimestamp}>
+                        {formatTime(note.timestamp)}
+                      </Text>
                     </View>
                   ))}
                 </View>
