@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { SearchIcon } from './SvgIcon';
 
 interface SearchInputProps {
@@ -13,6 +8,14 @@ interface SearchInputProps {
   placeholder?: string;
   defaultValue?: string;
   compact?: boolean;
+  /**
+   * When true, input is read-only (used e.g. on HomeScreen where tap navigates to Search).
+   */
+  readOnly?: boolean;
+  /**
+   * Optional handler for pressing the whole input container (e.g. navigate to Search screen).
+   */
+  onPressContainer?: () => void;
 }
 
 export const SearchInput: React.FC<SearchInputProps> = ({
@@ -21,6 +24,8 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   placeholder = 'Search videos...',
   defaultValue = '',
   compact = false,
+  readOnly = false,
+  onPressContainer,
 }) => {
   const [query, setQuery] = useState(defaultValue);
 
@@ -59,12 +64,18 @@ export const SearchInput: React.FC<SearchInputProps> = ({
     }
   };
 
+  const ContainerComponent = onPressContainer ? TouchableOpacity : View;
+
   return (
     <View style={[styles.container, compact && styles.containerCompact]}>
-      <TouchableOpacity
+      <ContainerComponent
         style={styles.inputContainer}
-        onPress={() => onSearch('')}
-        activeOpacity={0.7}
+        {...(onPressContainer
+          ? {
+              onPress: onPressContainer,
+              activeOpacity: 0.7,
+            }
+          : {})}
       >
         <View style={styles.icon}>
           <SearchIcon width={20} height={20} color="#2B2D42" />
@@ -77,10 +88,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           onChangeText={handleChange}
           onSubmitEditing={handleSubmit}
           returnKeyType="search"
-          editable={false}
-          pointerEvents="none"
+          editable={!readOnly}
         />
-      </TouchableOpacity>
+      </ContainerComponent>
     </View>
   );
 };

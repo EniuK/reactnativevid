@@ -144,6 +144,14 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     navigation.navigate('Settings');
   };
 
+  /**
+   * Handles press on home search input - navigates to Search tab.
+   * Home search field acts as a visual entry point, actual typing happens on SearchScreen.
+   */
+  const handleHomeSearchPress = () => {
+    navigation.navigate('Search');
+  };
+
   // Show no internet view if not connected
   if (networkState.isConnected === false) {
     return <NoInternetView onRetry={handleRetry} />;
@@ -157,6 +165,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             onSearch={handleSearch}
             placeholder="Search videos"
             compact
+            readOnly
+            onPressContainer={handleHomeSearchPress}
           />
           <TouchableOpacity
             onPress={handleSettingsPress}
