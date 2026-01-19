@@ -354,74 +354,75 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
                 showsTimecodes={true}
                 requiresLinearPlayback={false}
               />
-              {/* Top controls - shown when paused */}
-              {!isPlaying && (
-                <View style={styles.topControls}>
-                  <TouchableOpacity
-                    style={styles.topControlButton}
-                    onPress={handleBack}
-                    activeOpacity={0.7}
-                  >
-                    <LeftArrowIcon width={24} height={24} color="#fff" />
-                  </TouchableOpacity>
-                  <View style={styles.topRightControls}>
+              {/* Custom controls - hidden in fullscreen, native controls shown instead */}
+              {!isFullscreen && (
+                <>
+                  {/* Top controls - shown when paused */}
+                  {!isPlaying && (
+                    <View style={styles.topControls}>
+                      <TouchableOpacity
+                        style={styles.topControlButton}
+                        onPress={handleBack}
+                        activeOpacity={0.7}
+                      >
+                        <LeftArrowIcon width={24} height={24} color="#fff" />
+                      </TouchableOpacity>
+                      <View style={styles.topRightControls}>
+                        <TouchableOpacity
+                          style={styles.topControlButton}
+                          onPress={() => {}}
+                          activeOpacity={0.7}
+                        >
+                          <VolumeIcon width={24} height={24} color="#fff" />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.topControlButton}
+                          onPress={() => {}}
+                          activeOpacity={0.7}
+                        >
+                          <AirplayIcon width={24} height={24} color="#fff" />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  )}
+                  {/* Center playback controls */}
+                  <View style={styles.customControls}>
                     <TouchableOpacity
-                      style={styles.topControlButton}
-                      onPress={() => {}}
+                      style={styles.controlButton}
+                      onPress={handleBackward}
                       activeOpacity={0.7}
                     >
-                      <VolumeIcon width={24} height={24} color="#fff" />
+                      <BackwardIcon width={32} height={32} color="#fff" />
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={styles.topControlButton}
-                      onPress={() => {}}
+                      style={styles.playPauseButton}
+                      onPress={handlePlayPause}
                       activeOpacity={0.7}
                     >
-                      <AirplayIcon width={24} height={24} color="#fff" />
+                      {isPlaying ? (
+                        <PauseIcon width={48} height={48} color="#fff" />
+                      ) : (
+                        <PlayIcon width={48} height={48} color="#fff" />
+                      )}
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.controlButton}
+                      onPress={handleForward}
+                      activeOpacity={0.7}
+                    >
+                      <ForwardIcon width={32} height={32} color="#fff" />
                     </TouchableOpacity>
                   </View>
-                </View>
+                  {/* Bottom right fullscreen button */}
+                  <TouchableOpacity
+                    style={styles.fullscreenButton}
+                    onPress={handleFullscreen}
+                    activeOpacity={0.7}
+                  >
+                    <FullscreenIcon width={24} height={24} color="#fff" />
+                  </TouchableOpacity>
+                </>
               )}
-              {/* Center playback controls */}
-              <View style={styles.customControls}>
-                <TouchableOpacity
-                  style={styles.controlButton}
-                  onPress={handleBackward}
-                  activeOpacity={0.7}
-                >
-                  <BackwardIcon width={32} height={32} color="#fff" />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.playPauseButton}
-                  onPress={handlePlayPause}
-                  activeOpacity={0.7}
-                >
-                  {isPlaying ? (
-                    <PauseIcon width={48} height={48} color="#fff" />
-                  ) : (
-                    <PlayIcon width={48} height={48} color="#fff" />
-                  )}
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.controlButton}
-                  onPress={handleForward}
-                  activeOpacity={0.7}
-                >
-                  <ForwardIcon width={32} height={32} color="#fff" />
-                </TouchableOpacity>
-              </View>
-              {/* Bottom right fullscreen button */}
-              <TouchableOpacity
-                style={styles.fullscreenButton}
-                onPress={isFullscreen ? handleExitFullscreen : handleFullscreen}
-                activeOpacity={0.7}
-              >
-                {isFullscreen ? (
-                  <FullscreenExitIcon width={24} height={24} color="#fff" />
-                ) : (
-                  <FullscreenIcon width={24} height={24} color="#fff" />
-                )}
-              </TouchableOpacity>
             </>
           )}
         </View>
