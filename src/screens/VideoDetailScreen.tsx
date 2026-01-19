@@ -607,7 +607,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 12,
     paddingBottom: 12,
-    zIndex: 10,
+    zIndex: 20, // Higher than customControls (15) to ensure top buttons are clickable
   },
   topControlButton: {
     width: 40,
