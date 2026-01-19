@@ -1,15 +1,15 @@
 /**
  * Search Screen
  * 
- * Advanced search interface with live search, lazy loading, and sorting capabilities.
+ * Advanced search interface with lazy loading and sorting capabilities.
  * 
  * Features:
- * - Live search with debounce (500ms) for optimal performance
+ * - Search on Enter key press (no live search)
  * - Lazy loading: displays 10 results initially, loads more on demand
  * - Sort options: latest upload, oldest upload, most popular
  * - Shows all videos by default when no query is entered
  * - Result count display and search query tracking
- * - Optimized with useCallback and useMemo for performance
+ * - Optimized with useCallback to prevent unnecessary re-renders
  * 
  * @module SearchScreen
  */
@@ -52,7 +52,6 @@ interface SearchScreenProps {
 // Lazy loading configuration
 const INITIAL_DISPLAY_COUNT = 10; // Number of videos to show initially
 const LOAD_MORE_COUNT = 10; // Number of additional videos to load per "Show more" click
-const DEBOUNCE_DELAY = 500; // Debounce delay for live search in milliseconds
 
 /**
  * Converts internal sort option to YouTube API sort order
@@ -103,8 +102,6 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
   const [searchQuery, setSearchQuery] = useState(route.params?.query || '');
   const [sortOption, setSortOption] = useState<SortOption>('viewCount');
   const [showSortModal, setShowSortModal] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const hasInitialLoadedRef = useRef<boolean>(false);
   const initialQuery = route.params?.query || '';
 
@@ -125,7 +122,6 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
       console.error('Error loading videos:', err);
     } finally {
       setLoading(false);
-      setIsTyping(false);
     }
   }, []);
 
@@ -162,7 +158,6 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
       console.error('Search error:', err);
     } finally {
       setLoading(false);
-      setIsTyping(false);
     }
   }, [loadPopularVideos]);
 
@@ -212,37 +207,19 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
   }, [allVideos, displayCount]);
 
   /**
-   * Handles live search input changes with debounce.
-   * Debounces API calls to avoid excessive requests while user is typing.
-   * Uses 500ms delay before triggering search.
+   * Handles search input submission (Enter key press).
+   * Triggers search only when user explicitly submits the query.
    * 
-   * @param {string} query - Current search query from input
+   * @param {string} query - Search query from input
    */
-  const handleQueryChange = useCallback((query: string) => {
-    setSearchQuery(query);
-    setIsTyping(true);
-
-    if (debounceTimerRef.current) {
-      clearTimeout(debounceTimerRef.current);
-    }
-
-    debounceTimerRef.current = setTimeout(() => {
-      if (query.trim()) {
-        performSearch(query.trim(), sortOption);
-      } else {
-        loadPopularVideos();
-      }
-    }, DEBOUNCE_DELAY);
-  }, [sortOption, performSearch, loadPopularVideos]);
-
-  const handleSearch = (query: string) => {
+  const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
     if (query.trim()) {
       performSearch(query.trim(), sortOption);
     } else {
       loadPopularVideos();
     }
-  };
+  }, [sortOption, performSearch, loadPopularVideos]);
 
   /**
    * Handles sort option change from sort modal.
@@ -312,7 +289,6 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
         <View style={styles.header}>
           <SearchInput
             onSearch={handleSearch}
-            onQueryChange={handleQueryChange}
             defaultValue={initialQuery}
             placeholder="Search videos..."
           />
@@ -332,7 +308,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
             </View>
           )}
         </View>
-        {loading || isTyping ? (
+        {loading ? (
           <View style={styles.centerContainer}>
             <ActivityIndicator size="large" color="#007AFF" />
           </View>
