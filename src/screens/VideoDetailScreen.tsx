@@ -27,7 +27,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -126,6 +126,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   const [noteSaving, setNoteSaving] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const insets = useSafeAreaInsets();
 
   // Initialize video player with HLS stream
   // Using react-native-video v7 API with useVideoPlayer hook
@@ -305,6 +306,19 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   };
 
   /**
+   * Handles back navigation.
+   * On iOS, if there is no previous screen in the stack (e.g. deep link),
+   * it will fallback to navigating back to the main tabs.
+   */
+  const handleBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      navigation.navigate('MainTabs');
+    }
+  };
+
+  /**
    * Handles back navigation
    */
   const handleBack = () => {
@@ -361,7 +375,12 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
                 <>
                   {/* Top controls - shown when paused */}
                   {!isPlaying && (
-                    <View style={styles.topControls}>
+                    <View
+                      style={[
+                        styles.topControls,
+                        { paddingTop: 12 + insets.top },
+                      ]}
+                    >
                       <TouchableOpacity
                         style={styles.topControlButton}
                         onPress={handleBack}
