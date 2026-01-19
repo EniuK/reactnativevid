@@ -72,6 +72,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
               trackColor={{ false: '#E0E0E0', true: '#2B2D42' }}
               thumbColor="#FFFFFF"
               ios_backgroundColor="#E0E0E0"
+              style={styles.switch}
             />
           </View>
 
@@ -191,5 +192,8 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#666',
     lineHeight: 20,
+  },
+  switch: {
+    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
   },
 });
