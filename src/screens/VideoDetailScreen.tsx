@@ -38,6 +38,7 @@ import { RootStackParamList } from '../navigation/RootNavigator';
 import { ViewsIcon, LikesIcon } from '../components/icons/SvgIcon';
 import { PlayIcon } from '../components/icons/PlayIcon';
 import { PauseIcon } from '../components/icons/PauseIcon';
+import { PersonIcon } from '../components/icons/PersonIcon';
 
 type VideoDetailScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -263,7 +264,12 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
         </View>
         <View style={styles.content}>
           <Text style={styles.title}>{videoDetail.title}</Text>
-          <Text style={styles.channel}>{videoDetail.channelTitle}</Text>
+          <View style={styles.channelContainer}>
+            <View style={styles.channelIconContainer}>
+              <PersonIcon width={32} height={32} color="#FFFFFF" />
+            </View>
+            <Text style={styles.channel}>{videoDetail.channelTitle}</Text>
+          </View>
           
           {/* Tab Navigation */}
           <View style={styles.tabContainer}>
