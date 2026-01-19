@@ -10,7 +10,7 @@ import {
 import { YouTubeVideo } from '../types/youtube';
 
 const { width } = Dimensions.get('window');
-const CARD_WIDTH = width * 0.75;
+const CARD_WIDTH = width * 0.45;
 
 interface VideoCardProps {
   video: YouTubeVideo;
