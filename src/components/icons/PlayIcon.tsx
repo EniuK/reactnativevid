@@ -1,0 +1,23 @@
+import React from 'react';
+import Svg, { Path } from 'react-native-svg';
+
+interface PlayIconProps {
+  width?: number;
+  height?: number;
+  color?: string;
+}
+
+export const PlayIcon: React.FC<PlayIconProps> = ({
+  width = 32,
+  height = 32,
+  color = '#2B2D42',
+}) => (
+  <Svg width={width} height={height} viewBox="0 0 32 32" fill="none">
+    <Path
+      d="M22.211 12.3819C24.1307 13.5816 25.0904 14.1815 25.4196 14.9496C25.7071 15.6203 25.7071 16.3796 25.4196 17.0504C25.0904 17.8184 24.1307 18.4183 22.211 19.6182L13.1947 25.2534C11.0641 26.585 9.99878 27.2508 9.11966 27.18C8.35337 27.1184 7.65093 26.7292 7.19255 26.112C6.66669 25.404 6.66669 24.1478 6.66669 21.6352V10.3648C6.66669 7.8523 6.66669 6.59606 7.19255 5.88802C7.65093 5.27085 8.35337 4.88153 9.11966 4.81991C9.99878 4.74925 11.0641 5.41506 13.1947 6.74669L22.211 12.3819Z"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);

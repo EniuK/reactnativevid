@@ -36,6 +36,8 @@ import { getVideoDetails } from '../api/youtubeApi';
 import { VideoDetail } from '../types/youtube';
 import { RootStackParamList } from '../navigation/RootNavigator';
 import { ViewsIcon, LikesIcon } from '../components/icons/SvgIcon';
+import { PlayIcon } from '../components/icons/PlayIcon';
+import { PauseIcon } from '../components/icons/PauseIcon';
 
 type VideoDetailScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -95,6 +97,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   const [notes, setNotes] = useState<string[]>([]);
   const [newNote, setNewNote] = useState<string>('');
   const [noteSaving, setNoteSaving] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // Initialize video player with HLS stream
   // Using react-native-video v7 API with useVideoPlayer hook
@@ -182,8 +185,23 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   useEffect(() => {
     if (player && !loading && videoDetail) {
       player.play();
+      setIsPlaying(true);
     }
   }, [player, loading, videoDetail]);
+
+  /**
+   * Handles play/pause toggle
+   */
+  const handlePlayPause = () => {
+    if (!player) return;
+    if (isPlaying) {
+      player.pause();
+      setIsPlaying(false);
+    } else {
+      player.play();
+      setIsPlaying(true);
+    }
+  };
 
   if (loading) {
     return (
@@ -218,14 +236,29 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
               <Text style={styles.videoErrorText}>{videoError}</Text>
             </View>
           ) : (
-            <VideoView
-              ref={videoRef}
-              player={player}
-              style={styles.video}
-              controls
-              resizeMode="contain"
-              keepScreenAwake={true}
-            />
+            <>
+              <VideoView
+                ref={videoRef}
+                player={player}
+                style={styles.video}
+                controls={false}
+                resizeMode="contain"
+                keepScreenAwake={true}
+              />
+              <View style={styles.customControls}>
+                <TouchableOpacity
+                  style={styles.playPauseButton}
+                  onPress={handlePlayPause}
+                  activeOpacity={0.7}
+                >
+                  {isPlaying ? (
+                    <PauseIcon width={48} height={48} color="#fff" />
+                  ) : (
+                    <PlayIcon width={48} height={48} color="#fff" />
+                  )}
+                </TouchableOpacity>
+              </View>
+            </>
           )}
         </View>
         <View style={styles.content}>
@@ -352,10 +385,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
   },
   video: {
     width: '100%',
     height: '100%',
+  },
+  customControls: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  playPauseButton: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   videoErrorContainer: {
     width: '100%',
