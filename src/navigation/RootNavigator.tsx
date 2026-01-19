@@ -80,19 +80,13 @@ export const RootNavigator: React.FC = () => {
     >
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="MainTabs" component={MainTabs} />
-      <Stack.Screen
-        name="VideoDetail"
-        component={VideoDetailScreen}
-        options={{
-          headerShown: true,
-          headerStyle: { backgroundColor: '#fff' },
-          headerTintColor: '#2B2D42',
-          headerTitleStyle: {
-            fontFamily: 'Poppins-Bold',
-            fontSize: 18,
-          },
-        }}
-      />
+            <Stack.Screen
+              name="VideoDetail"
+              component={VideoDetailScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
       <Stack.Screen
         name="Settings"
         component={SettingsScreen}
