@@ -359,9 +359,7 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   resultsHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: 'column',
     paddingHorizontal: 16,
     paddingTop: 8,
   },
@@ -370,11 +368,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontWeight: '600',
     color: '#2B2D42',
-    flex: 1,
+    marginBottom: 8,
   },
   sortButton: {
     paddingVertical: 4,
-    paddingHorizontal: 8,
+    paddingHorizontal: 0,
+    alignSelf: 'flex-start',
   },
   sortButtonText: {
     fontSize: 14,
