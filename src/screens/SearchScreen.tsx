@@ -295,8 +295,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
           {(displayedVideos.length > 0 || loading) && (
             <View style={styles.resultsHeader}>
               <Text style={styles.resultsText}>
-                {allVideos.length} results <Text style={styles.boldText}>found for:</Text>
-                {searchQuery ? <Text style={styles.boldText}> "{searchQuery}"</Text> : ''}
+                {allVideos.length} results found for:{searchQuery ? <Text style={styles.boldText}> "{searchQuery}"</Text> : ''}
               </Text>
               <TouchableOpacity
                 onPress={() => setShowSortModal(true)}
