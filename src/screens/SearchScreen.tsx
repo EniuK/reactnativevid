@@ -366,8 +366,8 @@ const styles = StyleSheet.create({
   },
   resultsText: {
     fontSize: 14,
-    fontFamily: 'Poppins-SemiBold',
-    fontWeight: '600',
+    fontFamily: 'Poppins-Regular',
+    fontWeight: '400',
     color: '#2B2D42',
     marginBottom: 8,
   },
