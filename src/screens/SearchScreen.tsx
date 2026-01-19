@@ -367,7 +367,8 @@ const styles = StyleSheet.create({
   },
   resultsText: {
     fontSize: 14,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-SemiBold',
+    fontWeight: '600',
     color: '#2B2D42',
     flex: 1,
   },
@@ -377,8 +378,9 @@ const styles = StyleSheet.create({
   },
   sortButtonText: {
     fontSize: 14,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#007AFF',
+    fontFamily: 'Poppins-Regular',
+    fontWeight: '400',
+    color: '#2B2D42',
   },
   listContent: {
     padding: 16,
