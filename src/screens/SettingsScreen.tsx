@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
   reminderDescription: {
     fontSize: 14,
     fontFamily: 'Poppins-Regular',
+    fontWeight: '400',
     color: '#666',
     lineHeight: 20,
   },
