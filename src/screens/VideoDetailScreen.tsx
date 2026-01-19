@@ -348,7 +348,6 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
                 player={player}
                 style={[styles.video, !isPlaying && styles.videoPaused]}
                 controls={isFullscreen}
-                nativeControls={isFullscreen}
                 resizeMode="contain"
                 keepScreenAwake={true}
               />
