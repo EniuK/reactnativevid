@@ -29,7 +29,7 @@ const MainTabs: React.FC = () => {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#2B2D42',
-        tabBarInactiveTintColor: '#999',
+        tabBarInactiveTintColor: '#fff',
         tabBarStyle: {
           backgroundColor: '#8D99AE',
           borderTopWidth: 0,
