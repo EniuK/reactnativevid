@@ -85,11 +85,11 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#AAB2BD',
+    backgroundColor: '#8D99AE',
   },
   container: {
     flex: 1,
-    backgroundColor: '#AAB2BD',
+    backgroundColor: '#8D99AE',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 24,
