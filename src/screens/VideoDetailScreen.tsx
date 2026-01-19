@@ -291,7 +291,7 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
   }
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+    <SafeAreaView style={styles.safeArea} edges={['bottom']}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.scrollContent}
