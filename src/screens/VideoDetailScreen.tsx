@@ -38,6 +38,8 @@ import { RootStackParamList } from '../navigation/RootNavigator';
 import { ViewsIcon, LikesIcon } from '../components/icons/SvgIcon';
 import { PlayIcon } from '../components/icons/PlayIcon';
 import { PauseIcon } from '../components/icons/PauseIcon';
+import { BackwardIcon } from '../components/icons/BackwardIcon';
+import { ForwardIcon } from '../components/icons/ForwardIcon';
 import { PersonIcon } from '../components/icons/PersonIcon';
 
 type VideoDetailScreenNavigationProp = NativeStackNavigationProp<
@@ -204,6 +206,37 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
     }
   };
 
+  /**
+   * Handles backward skip (5 seconds)
+   */
+  const handleBackward = () => {
+    if (!player) return;
+    try {
+      // Get current time from player and seek backward 5 seconds
+      const currentTime = player.currentTime || 0;
+      const newTime = Math.max(0, currentTime - 5);
+      player.currentTime = newTime;
+    } catch (err) {
+      console.error('Error seeking backward:', err);
+    }
+  };
+
+  /**
+   * Handles forward skip (5 seconds)
+   */
+  const handleForward = () => {
+    if (!player) return;
+    try {
+      // Get current time from player and seek forward 5 seconds
+      const currentTime = player.currentTime || 0;
+      const duration = player.duration || Infinity;
+      const newTime = Math.min(duration, currentTime + 5);
+      player.currentTime = newTime;
+    } catch (err) {
+      console.error('Error seeking forward:', err);
+    }
+  };
+
   if (loading) {
     return (
       <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
@@ -248,6 +281,13 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
               />
               <View style={styles.customControls}>
                 <TouchableOpacity
+                  style={styles.controlButton}
+                  onPress={handleBackward}
+                  activeOpacity={0.7}
+                >
+                  <BackwardIcon width={32} height={32} color="#fff" />
+                </TouchableOpacity>
+                <TouchableOpacity
                   style={styles.playPauseButton}
                   onPress={handlePlayPause}
                   activeOpacity={0.7}
@@ -257,6 +297,13 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
                   ) : (
                     <PlayIcon width={48} height={48} color="#fff" />
                   )}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.controlButton}
+                  onPress={handleForward}
+                  activeOpacity={0.7}
+                >
+                  <ForwardIcon width={32} height={32} color="#fff" />
                 </TouchableOpacity>
               </View>
             </>
