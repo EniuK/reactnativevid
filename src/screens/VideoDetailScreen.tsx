@@ -555,12 +555,11 @@ const styles = StyleSheet.create({
   },
   bottomStatisticsContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 8,
     paddingBottom: 8,
     paddingTop: 6,
-    gap: 24,
   },
   statBox: {
     flexDirection: 'row',
