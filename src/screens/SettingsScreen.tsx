@@ -110,8 +110,9 @@ const styles = StyleSheet.create({
     color: '#2B2D42',
   },
   profileSection: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 16,
     paddingVertical: 16,
   },
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'Poppins-SemiBold',
     color: '#2B2D42',
-    marginLeft: 12,
+    marginTop: 12,
   },
   divider: {
     height: 1,
