@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 12,
     fontFamily: 'Poppins-Regular',
-    color: '#666666',
+    color: '#fff',
   },
   linksContainer: {
     flexDirection: 'row',
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   linkText: {
     fontSize: 12,
     fontFamily: 'Poppins-Regular',
-    color: '#666666',
+    color: '#2B2D42',
     textDecorationLine: 'underline',
   },
 });
