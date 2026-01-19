@@ -318,13 +318,6 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
     }
   };
 
-  /**
-   * Handles back navigation
-   */
-  const handleBack = () => {
-    navigation.goBack();
-  };
-
   if (loading) {
     return (
       <SafeAreaView style={styles.safeArea} edges={['bottom']}>
