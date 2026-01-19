@@ -100,9 +100,8 @@ const styles = StyleSheet.create({
   },
   youtubeText: {
     fontSize: 48,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-Bold',
     color: '#fff',
-    fontWeight: 'bold',
   },
   learnText: {
     fontSize: 32,
