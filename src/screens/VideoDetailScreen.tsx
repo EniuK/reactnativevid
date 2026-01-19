@@ -355,14 +355,15 @@ export const VideoDetailScreen: React.FC<VideoDetailScreenProps> = ({
               <VideoView
                 ref={videoRef}
                 player={player}
-                style={[
-                  styles.video,
-                  (!isPlaying && !isFullscreen) && styles.videoPaused,
-                ].filter(Boolean) as any}
+                style={styles.video}
                 controls={isFullscreen}
                 resizeMode="contain"
                 keepScreenAwake={true}
               />
+              {/* White overlay when video is paused in non-fullscreen mode */}
+              {!isFullscreen && !isPlaying && (
+                <View style={styles.videoPauseOverlay} />
+              )}
               {/* Custom controls - hidden in fullscreen, native controls shown instead */}
               {!isFullscreen && (
                 <>
@@ -582,8 +583,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  videoPaused: {
-    opacity: 0.5,
+  videoPauseOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)', // 50% białe tło nad video
+    zIndex: 5,
   },
   topControls: {
     position: 'absolute',
