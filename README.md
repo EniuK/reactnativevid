@@ -152,6 +152,87 @@ rm -rf node_modules
 npm install
 ```
 
+## Rozwiązane problemy techniczne
+
+Podczas rozwoju aplikacji napotkaliśmy kilka problemów technicznych. Poniżej opisane są główne wyzwania i zastosowane rozwiązania:
+
+### 1. Wykrywanie połączenia internetowego
+
+**Problem:** Biblioteka `NetInfo` zwracała `isInternetReachable` jako `null` na niektórych platformach, co powodowało fałszywe negatywne wyniki sprawdzania połączenia.
+
+**Rozwiązanie:** 
+- Zmodyfikowano logikę sprawdzania połączenia w `src/api/youtubeApi.ts`
+- Użyto `isConnected === true` jako głównego sprawdzenia
+- `isInternetReachable` jest traktowane jako sprawdzenie pomocnicze (tylko `false` jest traktowane jako brak połączenia)
+- Jeśli `NetInfo.fetch()` rzuca błąd, zakładamy, że połączenie jest dostępne i pozwalamy API obsłużyć potencjalne błędy
+
+### 2. Cache klucza API
+
+**Problem:** Klucz API był cachowany w pamięci, co uniemożliwiało aktualizację po zmianie w pliku `.env` bez restartu aplikacji.
+
+**Rozwiązanie:**
+- Usunięto zmienną `cachedApiKey` z `src/api/youtubeApi.ts`
+- Klucz API jest teraz odczytywany bezpośrednio z `Constants.expoConfig.extra.youtubeApiKey` przy każdym wywołaniu API
+- Zapewnia to, że zmiany w pliku `.env` są natychmiast widoczne po restarcie serwera deweloperskiego
+
+### 3. Fallback query w wyszukiwaniu
+
+**Problem:** Wyszukiwarka używała domyślnego zapytania `'programming tutorial'` gdy użytkownik nie wpisał tekstu, co prowadziło do wyświetlania nieistotnych wyników.
+
+**Rozwiązanie:**
+- Usunięto fallback query z funkcji `searchVideos`
+- Dodano walidację: jeśli `query` jest pusty, funkcja zwraca pustą tablicę
+- Tylko wyraźnie wprowadzone przez użytkownika zapytania są używane do wyszukiwania
+
+### 4. Renderowanie miniaturek na Androidzie
+
+**Problem:** Miniatury filmów nie ładowały się poprawnie na Androidzie, wydawało się, że są zakryte przez `z-index`.
+
+**Rozwiązanie:**
+- Usunięto `position: 'relative'` z kontenera miniaturki
+- Zmieniono `resizeMode` z `"contain"` na `"cover"` dla lepszego wypełnienia
+- Dodano właściwości `zIndex` do kontenera i miniaturki dla poprawnego renderowania warstw na Androidzie
+
+### 5. Kontrolki pełnoekranowe w odtwarzaczu wideo
+
+**Problem:** W trybie pełnoekranowym nie było możliwości wyjścia z pełnego ekranu ani kontrolowania odtwarzania (pause/skip).
+
+**Rozwiązanie:**
+- Dodano stan `isFullscreen` do śledzenia trybu pełnoekranowego
+- Zaimplementowano event listeners (`onFullscreenPlayerWillPresent`, `onFullscreenPlayerWillDismiss`)
+- W trybie pełnoekranowym włączono natywne kontrolki (`controls={true}`), które zapewniają wszystkie opcje (play/pause, seek, volume, exit fullscreen)
+- Niestandardowe kontrolki są ukrywane w trybie pełnoekranowym, aby uniknąć konfliktów
+
+### 6. Błąd TypeScript w stylach wideo
+
+**Problem:** TypeScript zgłaszał błąd typu dla tablicy stylów zawierającej wartości `false` (gdy warunek był fałszywy).
+
+**Rozwiązanie:**
+- Użyto `.filter(Boolean)` do usunięcia wartości falsy (`false`, `undefined`, `null`) z tablicy stylów
+- Dodano `as any` dla tej konkretnej tablicy (React Native akceptuje takie tablice w runtime)
+- Usunięto nieistniejące props `onFullscreenPlayerWillPresent` i `onFullscreenPlayerWillDismiss` z komponentu `VideoView`
+
+### 7. Zarządzanie komponentami ikon
+
+**Problem:** Każda ikona miała osobny plik `.tsx`, co prowadziło do duplikacji kodu i utrudniało utrzymanie.
+
+**Rozwiązanie:**
+- Skonsolidowano wszystkie ikony w jeden plik `src/components/SvgIcon.tsx`
+- Wszystkie ikony używają bezpośrednio zawartości SVG z plików w `assets/icons/`
+- Zaktualizowano wszystkie importy w aplikacji
+- Usunięto cały katalog `src/components/icons/` z indywidualnymi plikami
+- Zachowano wszystkie proporcje i `viewBox` z oryginalnych plików SVG
+
+### 8. Pozycjonowanie timestamp w notatkach
+
+**Problem:** Timestamp w notatkach nachodził na tekst notatki, co utrudniało czytelność.
+
+**Rozwiązanie:**
+- Zwiększono `paddingBottom` w stylu `noteText` z `4px` do `20px`
+- Zwiększono `paddingRight` do `60px` dla zapewnienia miejsca na timestamp
+- Timestamp jest pozycjonowany absolutnie w prawym dolnym rogu notatki
+- Zapewniono wyraźną linię odstępu między tekstem a timestamp
+
 ## Struktura projektu
 
 ```
